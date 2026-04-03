@@ -11,6 +11,7 @@ import { CompaniesComponent } from './companies/companies.component';
 import { CompanyDetailComponent } from './companies/company-detail/company-detail.component';
 import { CompanyEditComponent } from './companies/company-edit/company-edit.component';
 import { CompanyListComponent } from './companies/company-list/company-list.component';
+import { CompanyStartComponent } from './companies/company-start/company-start.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { CompanyListComponent } from './companies/company-list/company-list.comp
     CompanyDetailComponent,
     CompanyEditComponent,
     CompanyListComponent,
+    CompanyStartComponent,
   ],
   imports: [
     BrowserModule,
