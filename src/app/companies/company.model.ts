@@ -1,3 +1,4 @@
+import { Job } from '../jobs/job.model';   
 
 export class Company {
     public id: number;
@@ -5,6 +6,7 @@ export class Company {
     public description: string;
     public logoUrl: string;
     public websiteUrl: string;
+    public jobs: Job[];
 
     constructor(id: number, name: string, description: string, logoUrl: string, websiteUrl: string) {
         this.id = id;
@@ -12,5 +14,6 @@ export class Company {
         this.description = description;
         this.logoUrl = logoUrl;
         this.websiteUrl = websiteUrl;
+        this.jobs = [];
     }
 }
