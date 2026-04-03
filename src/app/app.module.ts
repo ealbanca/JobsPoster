@@ -14,6 +14,7 @@ import { CompanyListComponent } from './companies/company-list/company-list.comp
 import { CompanyStartComponent } from './companies/company-start/company-start.component';
 import { JobsComponent } from './jobs/jobs.component';
 import { JobsEditComponent } from './jobs/jobs-edit/jobs-edit.component';
+import { CompanyItemComponent } from './companies/company-list/company-item/company-item.component';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { JobsEditComponent } from './jobs/jobs-edit/jobs-edit.component';
     CompanyStartComponent,
     JobsComponent,
     JobsEditComponent,
+    CompanyItemComponent,
   ],
   imports: [
     BrowserModule,

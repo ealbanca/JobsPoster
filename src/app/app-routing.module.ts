@@ -22,7 +22,6 @@ const appRoutes: Routes = [
     {path: 'jobs', component: JobsComponent}
 ];
 
-
 @NgModule({
     imports: [RouterModule.forRoot(appRoutes)],
     exports: [RouterModule]
