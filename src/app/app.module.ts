@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { CompaniesComponent } from './companies/companies.component';
 import { CompanyDetailComponent } from './companies/company-detail/company-detail.component';
 import { CompanyEditComponent } from './companies/company-edit/company-edit.component';
+import { CompanyListComponent } from './companies/company-list/company-list.component';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { CompanyEditComponent } from './companies/company-edit/company-edit.comp
     CompaniesComponent,
     CompanyDetailComponent,
     CompanyEditComponent,
+    CompanyListComponent,
   ],
   imports: [
     BrowserModule,
