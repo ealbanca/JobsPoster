@@ -1,10 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Company } from '../../company.model';
 
 @Component({
-  selector: 'cms-company-item',
+  selector: 'app-company-item',
   templateUrl: './company-item.component.html',
-  styleUrl: './company-item.component.css'
+  styleUrls: ['./company-item.component.css']
 })
-export class CompanyItemComponent {
+export class CompanyItemComponent implements OnInit {
+  @Input() company: Company;
+  @Input() index: number;
+
+  ngOnInit(){    
+  }
 
 }
