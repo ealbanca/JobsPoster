@@ -1,11 +1,18 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
-var express = require('express');
-var path = require('path');
-var router = express.Router();
+const Company = require('../models/company');
+const Job = require('../models/job');
+const app = express();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.sendFile('index.html', { root: path.join(__dirname, '../../dist/cms') });
+mongoose.connect('mongodb+srv://ealbanca:Slcw7278@jobpostercluster.frhemon.mongodb.net/').then(() => {
+    console.log('Connected to MongoDB');
+}).catch((err) => {
+    console.error('Connection Failed', err);
 });
 
-module.exports = router;
+app.use(bodyParser.json());
+
+module.exports = app;
+
