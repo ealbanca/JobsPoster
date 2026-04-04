@@ -20,3 +20,5 @@ const companySchema = new mongoose.Schema({
     ref: 'Job',
   }],
 });
+
+module.exports = mongoose.model('Company', companySchema);
