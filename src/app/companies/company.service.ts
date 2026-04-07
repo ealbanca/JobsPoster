@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { Company } from './company.model';
-import {Job} from '../jobs/job.model';
+import {Job} from '../shared/job.model';
 
 @Injectable()
 export class CompanyService {

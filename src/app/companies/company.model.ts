@@ -1,4 +1,4 @@
-import { Job } from '../jobs/job.model';   
+import { Job } from '../shared/job.model';   
 
 export class Company {
     public id: number;
