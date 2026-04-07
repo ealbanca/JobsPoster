@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { Company } from '../company.model';
+import { CompanyService } from '../company.service';
 
 @Component({
   selector: 'app-company-list',
@@ -13,19 +14,26 @@ export class CompanyListComponent implements OnInit, OnDestroy {
   companies: Company[];
   subscription: Subscription;
   
-  constructor() { }
+  constructor(private companyService: CompanyService,
+              private router: Router,
+              private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
-    // this.companies = this.companyService.getCompanies();
-    // this.subscription = this.companyService.companiesChanged
-    //   .subscribe(
-    //     (companies: Company[]) => {
-    //       this.companies = companies;
-    //     }
-    //   );
+    this.subscription = this.companyService.companiesChanged
+      .subscribe(
+        (companies: Company[]) => {
+          this.companies = companies;
+        }
+      );
+    this.companies = this.companyService.getCompanies();
+  }
+
+  onNewCompany() {
+    this.router.navigate(['new'], {relativeTo: this.route});
   }
 
   ngOnDestroy() {
-    // this.subscription.unsubscribe();
+    this.subscription.unsubscribe();
   }
 }
