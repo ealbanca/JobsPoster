@@ -5,9 +5,9 @@ import { Company } from '../company.model';
 import { CompanyService } from '../company.service';
 
 @Component({
-  selector: 'cms-company-detail',
+  selector: 'app-company-detail',
   templateUrl: './company-detail.component.html',
-  styleUrl: './company-detail.component.css'
+  styleUrls: ['./company-detail.component.css']
 })
 
 export class CompanyDetailComponent implements OnInit {

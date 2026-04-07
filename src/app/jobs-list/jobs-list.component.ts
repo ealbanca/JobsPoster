@@ -5,7 +5,7 @@ import {Job} from '../shared/job.model';
 import { JobsListService } from './jobs-list.service';
 
 @Component({
-  selector: 'cms-jobs',
+  selector: 'app-jobs-list',
   templateUrl: './jobs-list.component.html',
   styleUrls: ['./jobs-list.component.css']
 })

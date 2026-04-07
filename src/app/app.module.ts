@@ -16,6 +16,7 @@ import { JobsListComponent } from './jobs-list/jobs-list.component';
 import { JobsEditComponent } from './jobs-list/jobs-edit/jobs-edit.component';
 import { CompanyItemComponent } from './companies/company-list/company-item/company-item.component';
 import { CompanyService } from './companies/company.service';
+import { JobsListService } from './jobs-list/jobs-list.service';
 
 
 
@@ -39,7 +40,7 @@ import { CompanyService } from './companies/company.service';
     FormsModule,
     ReactiveFormsModule
 ],
-  providers: [CompanyService],
+  providers: [CompanyService, JobsListService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

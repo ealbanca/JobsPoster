@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'cms-company-start',
+  selector: 'app-company-start',
   templateUrl: './company-start.component.html',
-  styleUrl: './company-start.component.css'
+  styleUrls: ['./company-start.component.css']
 })
 export class CompanyStartComponent {
 

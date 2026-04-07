@@ -5,7 +5,7 @@ import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { CompanyService } from '../company.service';
 
 @Component({
-  selector: 'cms-company-edit',
+  selector: 'app-company-edit',
   templateUrl: './company-edit.component.html',
   styleUrls: ['./company-edit.component.css']
 })
@@ -55,16 +55,12 @@ export class CompanyEditComponent implements OnInit {
   private initForm(){
     let companyName = '';
     let companyDescription = '';
-    let companyImagePath = '';
-    let companyWebsiteUrl = '';
-    let companyJobs = new FormArray([]);
+    let companyJobs: FormArray<FormGroup> = new FormArray<FormGroup>([]);
 
     if(this.editMode){
       const company = this.companyService.getCompany(this.id);
       companyName = company.name;
       companyDescription = company.description;
-      companyImagePath = company.imagePath;
-      companyWebsiteUrl = company.websiteUrl;
       if(company['jobs']){
         for(let job of company.jobs){
           companyJobs.push(
@@ -80,14 +76,11 @@ export class CompanyEditComponent implements OnInit {
     this.companyForm = new FormGroup({
       'name': new FormControl(companyName, Validators.required),
       'description': new FormControl(companyDescription, Validators.required),
-      'imagePath': new FormControl(companyImagePath, Validators.required),
-      'websiteUrl': new FormControl(companyWebsiteUrl, Validators.required),  
       'jobs': companyJobs
     });
   }
 
-get controls() { // a getter!
-  return (<FormArray>this.companyForm.get('jobs')).controls;
-
-}
+  get controls() { // a getter!
+    return (<FormArray>this.companyForm.get('jobs')).controls;
+  }
 }

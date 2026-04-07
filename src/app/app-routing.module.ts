@@ -7,7 +7,7 @@ import { CompanyDetailComponent } from './companies/company-detail/company-detai
 import { CompanyEditComponent } from './companies/company-edit/company-edit.component';
 import { CompanyListComponent} from './companies/company-list/company-list.component';
 import { CompanyStartComponent } from './companies/company-start/company-start.component';
-import { JobsComponent } from './jobs-list/jobs-list.component';
+import { JobsListComponent } from './jobs-list/jobs-list.component';
 
 
 const appRoutes: Routes = [
@@ -19,7 +19,7 @@ const appRoutes: Routes = [
         {path: ':id/edit', component: CompanyEditComponent}
     ]
     },
-    {path: 'jobs', component: JobsComponent}
+    {path: 'jobs', component: JobsListComponent}
 ];
 
 @NgModule({
