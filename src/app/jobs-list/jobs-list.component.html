@@ -1,1 +1,16 @@
-<p>jobs works!</p>
+<div class="row">
+    <div class="col-xs-10">
+        <app-job-edit></app-job-edit>
+        <hr>
+        <ul class="list-group">
+            <a 
+            class="list-group-item" 
+            style="cursor:pointer"
+            *ngFor = "let job of jobs; let i = index"
+            (click)="onEditItem(i)"
+            >
+            {{ job.title }} ({{ job.location }}) - ${{ job.salary }} - {{ job.type }}
+        </a>
+        </ul>
+    </div>
+</div>
