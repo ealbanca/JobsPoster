@@ -15,6 +15,8 @@ import { CompanyStartComponent } from './companies/company-start/company-start.c
 import { JobsComponent } from './jobs/jobs.component';
 import { JobsEditComponent } from './jobs/jobs-edit/jobs-edit.component';
 import { CompanyItemComponent } from './companies/company-list/company-item/company-item.component';
+import { CompanyService } from './companies/company.service';
+
 
 
 @NgModule({
@@ -36,7 +38,7 @@ import { CompanyItemComponent } from './companies/company-list/company-item/comp
     AppRoutingModule,
     FormsModule
 ],
-  providers: [],
+  providers: [CompanyService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
