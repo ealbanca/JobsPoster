@@ -12,11 +12,12 @@ import { CompanyDetailComponent } from './companies/company-detail/company-detai
 import { CompanyEditComponent } from './companies/company-edit/company-edit.component';
 import { CompanyListComponent } from './companies/company-list/company-list.component';
 import { CompanyStartComponent } from './companies/company-start/company-start.component';
+import { CompanyItemComponent } from './companies/company-list/company-item/company-item.component';
 import { JobsListComponent } from './jobs-list/jobs-list.component';
 import { JobsEditComponent } from './jobs-list/jobs-edit/jobs-edit.component';
-import { CompanyItemComponent } from './companies/company-list/company-item/company-item.component';
-import { CompanyService } from './companies/company.service';
+
 import { JobsListService } from './jobs-list/jobs-list.service';
+import { CompanyService } from './companies/company.service';
 
 
 
