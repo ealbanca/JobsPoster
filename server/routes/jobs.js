@@ -10,8 +10,8 @@ router.get('/', async (req, res) => {
         res.status(200).json({
             message: 'Jobs fetched successfully',
             jobs: jobs
-        );
-    }).catch((err) => {        res.status(500).json({ error: 'Failed to fetch jobs' });
+        });
+    }).catch((err) => {
+        res.status(500).json({ error: 'Failed to fetch jobs' });
     });
-
 });

@@ -22,4 +22,33 @@ export class CompanyService {
 
         this.companies = [company1, company2, company3];
     }
+
+
+    setCompanies(companies: Company[]) {
+        this.companies = companies;
+        this.companiesChanged.next(this.companies.slice());
+    }
+    // get a copy of the companies array to prevent external modification
+    getCompanies() {
+        return this.companies.slice();
+    }
+
+    getCompany(index: number) {
+        return this.companies[index];
+    }
+
+    addCompany(company: Company) {
+        this.companies.push(company);
+        this.companiesChanged.next(this.companies.slice());
+    }
+
+    updateCompany(index: number, newCompany: Company) {
+        this.companies[index] = newCompany;
+        this.companiesChanged.next(this.companies.slice());
+    }
+
+    deleteCompany(index: number) {
+        this.companies.splice(index, 1);
+        this.companiesChanged.next(this.companies.slice());
+    }
 }
