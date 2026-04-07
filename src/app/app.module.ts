@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-import { AppRoutingModule } from './app-routing.module';
 import { CompaniesComponent } from './companies/companies.component';
 import { CompanyDetailComponent } from './companies/company-detail/company-detail.component';
 import { CompanyEditComponent } from './companies/company-edit/company-edit.component';
@@ -36,7 +36,8 @@ import { CompanyService } from './companies/company.service';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
 ],
   providers: [CompanyService],
   bootstrap: [AppComponent]
