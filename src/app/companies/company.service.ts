@@ -37,6 +37,11 @@ export class CompanyService {
         return this.companies[index];
     }
 
+    addJobToCompany(companyIndex: number, job: Job) {
+        this.companies[companyIndex].jobs.push(job);
+        this.companiesChanged.next(this.companies.slice());
+    }
+
     addCompany(company: Company) {
         this.companies.push(company);
         this.companiesChanged.next(this.companies.slice());
