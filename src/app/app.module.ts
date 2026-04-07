@@ -15,6 +15,8 @@ import { CompanyStartComponent } from './companies/company-start/company-start.c
 import { CompanyItemComponent } from './companies/company-list/company-item/company-item.component';
 import { JobsListComponent } from './jobs-list/jobs-list.component';
 import { JobsEditComponent } from './jobs-list/jobs-edit/jobs-edit.component';
+import { DropdownDirective } from './shared/dropdown.directive';
+
 
 import { JobsListService } from './jobs-list/jobs-list.service';
 import { CompanyService } from './companies/company.service';
@@ -33,6 +35,7 @@ import { CompanyService } from './companies/company.service';
     JobsListComponent,
     JobsEditComponent,
     CompanyItemComponent,
+    DropdownDirective
   ],
   imports: [
     BrowserModule,
