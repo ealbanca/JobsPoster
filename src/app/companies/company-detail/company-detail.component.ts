@@ -27,6 +27,10 @@ export class CompanyDetailComponent implements OnInit {
         }
       );
   }
+
+  onAddJob() {
+    this.router.navigate(['add-job'], {relativeTo: this.route});
+  }
   
   onEditCompany() {
     this.router.navigate(['edit'], {relativeTo: this.route});
