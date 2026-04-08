@@ -27,13 +27,9 @@ export class CompanyDetailComponent implements OnInit {
       .subscribe(
         (params: Params) => {
           this.id = +params['id'];
-          this.company$ = this.companyService.getCompany(this.id);
+          this.company$ = this.companyService.getCompany(this.id + '');
         }
       );
-  }
-
-  onEditCompany() {
-    this.router.navigate(['edit'], { relativeTo: this.route });
   }
 
   onDeleteCompany() {

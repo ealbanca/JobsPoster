@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
-import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 
+import {Company} from '../company.model';
 import { CompanyService } from '../company.service';
+
 
 @Component({
   selector: 'app-company-edit',
@@ -10,94 +12,53 @@ import { CompanyService } from '../company.service';
   styleUrls: ['./company-edit.component.css']
 })
 export class CompanyEditComponent implements OnInit {
-  id: number;
-  editMode = false;
-  companyForm: FormGroup;
+  originalCompany: Company;
+  company: Company = new Company(0, '', '', '', '', []);
+  editMode: boolean = false;
+  id: string = '';
 
   constructor(private route: ActivatedRoute,
               private companyService: CompanyService,
               private router: Router) { }
   
-  ngOnInit(){
-    this.route.params.subscribe((params: Params) => {
-      this.id = +params['id'];
-      this.editMode = params['id'] != null;
-      this.initForm();
-    });
-  }
-
-  onSubmit(){
-    // Map imagePath to logoUrl for the Company model
-    const formValue = this.companyForm.value;
-    const companyData = {
-      ...formValue,
-      logoUrl: formValue.imagePath,
-    };
-    delete companyData.imagePath;
-
-      if(this.editMode){
-        this.companyService.updateCompany(this.id + '', companyData);
-      } else {
-        this.companyService.addCompany(companyData);
-      }
-    this.onCancel();
-  }
-
-  onDeleteJob(index: number){
-    (<FormArray>this.companyForm.get('jobs')).removeAt(index);
-  }
-
-  onCancel(){
-    this.router.navigate(['../'], {relativeTo: this.route});
-  }
-
-  private initForm(){
-    let companyName = '';
-    let companyDescription = '';
-    let companyImagePath = '';
-    let companyWebsiteUrl = '';
-    let companyJobs: FormArray<FormGroup> = new FormArray<FormGroup>([]);
-
-    if(this.editMode){
-      this.companyService.getCompany(this.id + '').subscribe(company => {
-        companyName = company.name;
-        companyDescription = company.description;
-        companyImagePath = company.logoUrl || '';
-        companyWebsiteUrl = company.websiteUrl || '';
-        if(company.jobs){
-          for(let job of company.jobs){
-            companyJobs.push(
-              new FormGroup({
-                'title': new FormControl(job.title, Validators.required),
-                'jobId': new FormControl(job.id, Validators.required)
-              })
-            );
-          }
-        }
-        this.companyForm = new FormGroup({
-          'name': new FormControl(companyName, Validators.required),
-          'imagePath': new FormControl(companyImagePath, Validators.required),
-          'websiteUrl': new FormControl(companyWebsiteUrl, Validators.required),
-          'description': new FormControl(companyDescription, Validators.required),
-          'jobs': companyJobs
-        });
-        this.companyForm.markAsPristine();
-        this.companyForm.markAsUntouched();
-      });
+ngOnInit(){
+  this.route.params.subscribe((params: Params) => {
+    this.id = params['id'];
+    if(this.id === undefined || this.id === null) {
+      this.editMode = false;
+      return;
     } else {
-      this.companyForm = new FormGroup({
-        'name': new FormControl(companyName, Validators.required),
-        'imagePath': new FormControl(companyImagePath, Validators.required),
-        'websiteUrl': new FormControl(companyWebsiteUrl, Validators.required),
-        'description': new FormControl(companyDescription, Validators.required),
-        'jobs': companyJobs
+      this.companyService.getCompany(this.id).subscribe(company => {
+        this.originalCompany = company;
+        if(this.originalCompany === undefined || this.originalCompany === null) {
+          return;
+        } else {
+          this.editMode = true;
+          this.company = JSON.parse(JSON.stringify(this.originalCompany));
+        }
       });
-      this.companyForm.markAsPristine();
-      this.companyForm.markAsUntouched();
     }
-  }
+  });
+}
 
-  get controls() { // a getter!
-    return (<FormArray>this.companyForm.get('jobs')).controls;
+onSubmit(form: NgForm) {
+  const value = form.value;
+  const newCompany = new Company(this.company.id, value.name, value.description, value.logoUrl, value.websiteUrl, []);
+  if(this.editMode) {
+    if(this.originalCompany) {
+      this.companyService.updateCompany(this.originalCompany, newCompany);
+    }
+  } else {
+    this.companyService.addCompany(newCompany);
   }
+  this.router.navigate(['/companies']);
+}
+
+onCancel() {
+  this.router.navigate(['/companies']);
+}
+
+onRemoveItem(index: number) {
+
+}
 }
