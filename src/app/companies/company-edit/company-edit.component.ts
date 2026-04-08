@@ -55,12 +55,16 @@ export class CompanyEditComponent implements OnInit {
   private initForm(){
     let companyName = '';
     let companyDescription = '';
+    let companyImagePath = '';
+    let companyWebsiteUrl = '';
     let companyJobs: FormArray<FormGroup> = new FormArray<FormGroup>([]);
 
     if(this.editMode){
       const company = this.companyService.getCompany(this.id);
       companyName = company.name;
       companyDescription = company.description;
+      companyImagePath = company.logoUrl || '';
+      companyWebsiteUrl = company.websiteUrl || '';
       if(company['jobs']){
         for(let job of company.jobs){
           companyJobs.push(
@@ -75,6 +79,8 @@ export class CompanyEditComponent implements OnInit {
 
     this.companyForm = new FormGroup({
       'name': new FormControl(companyName, Validators.required),
+      'imagePath': new FormControl(companyImagePath, Validators.required),
+      'websiteUrl': new FormControl(companyWebsiteUrl, Validators.required),
       'description': new FormControl(companyDescription, Validators.required),
       'jobs': companyJobs
     });

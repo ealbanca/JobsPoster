@@ -22,14 +22,19 @@
         <h1><strong>{{company.name}}</strong></h1>
     </div>
 </div>
-<div class="row" style="margin-bottom: 2rem;">
+<div class="row" style="margin-bottom: 2.5rem;">
+    <div class="col-xs-12">
+        <a [href]="company.websiteUrl" target="_blank"><h4 style="margin-top: 0; margin-bottom: 0.5rem;">{{company.websiteUrl}}</h4></a>
+    </div>
+</div>
+<div class="row" style="margin-top: 2rem; margin-bottom: 2rem;">
     <div class="col-xs-12">
         {{company.description}}
     </div>
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <ul class="list-group">
+        <ul class="list-group jobs-table">
             <li 
             class="list-group-item" 
             *ngFor="let job of company.jobs">

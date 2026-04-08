@@ -27,7 +27,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="form-group">
-                        <label for="imagePath">Image URL</label>
+                        <label for="imagePath">Logo Image URL</label>
                         <input 
                         type="text" 
                         id="imagePath" 
@@ -42,6 +42,20 @@
                     <img [src]="imagePath.value" class="img-responsive">
                 </div>
             </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="websiteUrl">Website URL</label>
+                        <input 
+                        type="text" 
+                        id="websiteUrl" 
+                        formControlName="websiteUrl"
+                        class="form-control"
+                        #websiteUrl>
+                    </div>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-xs-12">
                     <div class="form-group">
@@ -72,7 +86,7 @@
                             <input 
                                 type="number" 
                                 class="form-control"
-                                formControlName="amount">
+                                formControlName="salary">
                         </div>
                         <div class="col-xs-2">
                             <button

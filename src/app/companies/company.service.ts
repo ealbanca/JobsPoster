@@ -18,7 +18,9 @@ export class CompanyService {
         company2.jobs = [new Job(2, 'Graphic Designer', 'Create visual concepts and designs', 'Los Angeles, CA', 60000, 'Full-time', 2)];
 
         const company3 = new Company(3, 'Financial Services Inc.', 'Comprehensive financial services provider', 'https://m.media-amazon.com/images/I/2128q5aAVQL.png', 'https://financialservices.com');
-        company3.jobs = [new Job(3, 'Financial Analyst', 'Analyze financial data and trends', 'Chicago, IL', 75000, 'Full-time', 3)];
+        company3.jobs = [new Job(3, 'Financial Analyst', 'Analyze financial data and trends', 'Chicago, IL', 75000, 'Full-time', 3), new Job(4, 'Accountant', 'Manage financial records and transactions', 'Chicago, IL', 65000, 'Full-time', 3),
+                new Job(5, 'Investment Banker', 'Advise clients on financial strategies', 'Chicago, IL', 120000, 'Full-time', 3), new Job(6, 'Risk Manager', 'Identify and mitigate financial risks', 'Chicago, IL', 85000, 'Full-time', 3)
+        ];
 
         this.companies = [company1, company2, company3];
     }
