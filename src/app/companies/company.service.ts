@@ -11,13 +11,13 @@ export class CompanyService {
     private companies: Company[] = [];
 
     constructor() {
-        const company1 = new Company(1, 'Tech Solutions', 'Leading provider of tech solutions', 'https://example.com/logo1.png', 'https://techsolutions.com');
+        const company1 = new Company(1, 'Tech Solutions', 'Leading provider of tech solutions', 'https://m.media-amazon.com/images/I/2128q5aAVQL.png', 'https://techsolutions.com');
         company1.jobs = [new Job(1, 'Software Engineer', 'Develop and maintain software applications', 'New York, NY', 90000, 'Full-time', 1)];
 
-        const company2 = new Company(2, 'Creative Agency', 'Innovative marketing and design agency', 'https://example.com/logo2.png', 'https://creativeagency.com');
+        const company2 = new Company(2, 'Creative Agency', 'Innovative marketing and design agency', 'https://m.media-amazon.com/images/I/2128q5aAVQL.png', 'https://creativeagency.com');
         company2.jobs = [new Job(2, 'Graphic Designer', 'Create visual concepts and designs', 'Los Angeles, CA', 60000, 'Full-time', 2)];
 
-        const company3 = new Company(3, 'Financial Services Inc.', 'Comprehensive financial services provider', 'https://example.com/logo3.png', 'https://financialservices.com');
+        const company3 = new Company(3, 'Financial Services Inc.', 'Comprehensive financial services provider', 'https://m.media-amazon.com/images/I/2128q5aAVQL.png', 'https://financialservices.com');
         company3.jobs = [new Job(3, 'Financial Analyst', 'Analyze financial data and trends', 'Chicago, IL', 75000, 'Full-time', 3)];
 
         this.companies = [company1, company2, company3];
