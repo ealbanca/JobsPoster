@@ -10,11 +10,16 @@ const mongoose = require('mongoose');
 const index = require('./server/routes/app');
 
 //establish a connection to the MongoDB database
-mongoose.connect('mongodb+srv://ealbanca:Slcw7278@jobpostercluster.frhemon.mongodb.net/').then(() => {
-    console.log('Connected to MongoDB');
+mongoose.connect('mongodb+srv://ealbanca:Slcw7278@jobpostercluster.frhemon.mongodb.net/JobPoster').then(() => {
+  console.log('Connected to MongoDB');
+  // Debug: List all companies in the JobPoster database
+  mongoose.connection.once('open', async () => {
+    const companies = await mongoose.connection.db.collection('companies').find().toArray();
+    console.log('Companies in JobPoster:', companies);
+  });
 }
 ).catch((err) => {
-    console.error('Connection Failed', err);
+  console.error('Connection Failed', err);
 }
 );
 
@@ -48,12 +53,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 
 //add the company and job routes to the express app
-app.use('/api/companies', companyRoutes);
-app.use('/api/jobs', jobRoutes);
+app.use('/companies', companyRoutes);
+app.use('/jobs', jobRoutes);
 
 // Tell express to map all other non-defined routes back to the index page (Express 4.x compatible)
 app.all('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'src/public/index.html'));
+  res.sendFile(path.join(__dirname, 'dist/cms/browser'));
 });
 
 // Define the port address and tell express to use this port

@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import { Subject } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Company } from './company.model';
 import {Job} from '../shared/job.model';
@@ -8,54 +9,26 @@ import {Job} from '../shared/job.model';
 export class CompanyService {
     companiesChanged = new Subject<Company[]>();
 
-    private companies: Company[] = [];
+    constructor(private http: HttpClient) {}
 
-    constructor() {
-        const company1 = new Company(1, 'Tech Solutions', 'Leading provider of tech solutions', 'https://m.media-amazon.com/images/I/2128q5aAVQL.png', 'https://techsolutions.com');
-        company1.jobs = [new Job(1, 'Software Engineer', 'Develop and maintain software applications', 'New York, NY', 90000, 'Full-time', 1)];
-
-        const company2 = new Company(2, 'Creative Agency', 'Innovative marketing and design agency', 'https://m.media-amazon.com/images/I/2128q5aAVQL.png', 'https://creativeagency.com');
-        company2.jobs = [new Job(2, 'Graphic Designer', 'Create visual concepts and designs', 'Los Angeles, CA', 60000, 'Full-time', 2)];
-
-        const company3 = new Company(3, 'Financial Services Inc.', 'Comprehensive financial services provider', 'https://m.media-amazon.com/images/I/2128q5aAVQL.png', 'https://financialservices.com');
-        company3.jobs = [new Job(3, 'Financial Analyst', 'Analyze financial data and trends', 'Chicago, IL', 75000, 'Full-time', 3), new Job(4, 'Accountant', 'Manage financial records and transactions', 'Chicago, IL', 65000, 'Full-time', 3),
-                new Job(5, 'Investment Banker', 'Advise clients on financial strategies', 'Chicago, IL', 120000, 'Full-time', 3), new Job(6, 'Risk Manager', 'Identify and mitigate financial risks', 'Chicago, IL', 85000, 'Full-time', 3)
-        ];
-
-        this.companies = [company1, company2, company3];
-    }
-
-
-    setCompanies(companies: Company[]) {
-        this.companies = companies;
-        this.companiesChanged.next(this.companies.slice());
-    }
     // get a copy of the companies array to prevent external modification
     getCompanies() {
-        return this.companies.slice();
+        return this.http.get<Company[]>('http://localhost:3000/companies');
     }
 
-    getCompany(index: number) {
-        return this.companies[index];
-    }
-
-    addJobToCompany(companyIndex: number, job: Job) {
-        this.companies[companyIndex].jobs.push(job);
-        this.companiesChanged.next(this.companies.slice());
+    getCompany(id: string) {
+        return this.http.get<Company>(`http://localhost:3000/companies/${id}`);
     }
 
     addCompany(company: Company) {
-        this.companies.push(company);
-        this.companiesChanged.next(this.companies.slice());
+        return this.http.post<Company>('http://localhost:3000/companies', company);
     }
 
-    updateCompany(index: number, newCompany: Company) {
-        this.companies[index] = newCompany;
-        this.companiesChanged.next(this.companies.slice());
+    updateCompany(id: string, company: Company) {
+        return this.http.put<Company>(`http://localhost:3000/companies/${id}`, company);
     }
 
-    deleteCompany(index: number) {
-        this.companies.splice(index, 1);
-        this.companiesChanged.next(this.companies.slice());
+    deleteCompany(id: string) {
+        return this.http.delete(`http://localhost:3000/companies/${id}`);
     }
 }

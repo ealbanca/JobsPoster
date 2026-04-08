@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { Company } from '../company.model';
@@ -11,29 +10,24 @@ import { CompanyService } from '../company.service';
   styleUrls: ['./company-list.component.css']
 })
 export class CompanyListComponent implements OnInit, OnDestroy {
-  companies: Company[];
-  subscription: Subscription;
+  companies: Company[] = [];
+  private subscription: Subscription;
+  private companiesChangedSubscription: Subscription;
   
-  constructor(private companyService: CompanyService,
-              private router: Router,
-              private route: ActivatedRoute
-  ) { }
+  constructor(private companyService: CompanyService) { }
 
   ngOnInit() {
-    this.subscription = this.companyService.companiesChanged
-      .subscribe(
-        (companies: Company[]) => {
-          this.companies = companies;
-        }
-      );
-    this.companies = this.companyService.getCompanies();
-  }
-
-  onNewCompany() {
-    this.router.navigate(['new'], {relativeTo: this.route});
+    this.subscription = this.companyService.getCompanies().subscribe((response: any) => {
+      this.companies = response.companies;
+    });
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    if (this.companiesChangedSubscription) {
+      this.companiesChangedSubscription.unsubscribe();
+    }
   }
 }

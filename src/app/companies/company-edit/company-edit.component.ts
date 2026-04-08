@@ -35,11 +35,11 @@ export class CompanyEditComponent implements OnInit {
     };
     delete companyData.imagePath;
 
-    if(this.editMode){
-      this.companyService.updateCompany(this.id, companyData);
-    } else {
-      this.companyService.addCompany(companyData);
-    }
+      if(this.editMode){
+        this.companyService.updateCompany(this.id + '', companyData);
+      } else {
+        this.companyService.addCompany(companyData);
+      }
     this.onCancel();
   }
 
@@ -59,33 +59,42 @@ export class CompanyEditComponent implements OnInit {
     let companyJobs: FormArray<FormGroup> = new FormArray<FormGroup>([]);
 
     if(this.editMode){
-      const company = this.companyService.getCompany(this.id);
-      companyName = company.name;
-      companyDescription = company.description;
-      companyImagePath = company.logoUrl || '';
-      companyWebsiteUrl = company.websiteUrl || '';
-      if(company['jobs']){
-        for(let job of company.jobs){
-          companyJobs.push(
-            new FormGroup({
-              'title': new FormControl(job.title, Validators.required),
-              'jobId': new FormControl(job.id, Validators.required)
-            })
-          );
+      this.companyService.getCompany(this.id + '').subscribe(company => {
+        companyName = company.name;
+        companyDescription = company.description;
+        companyImagePath = company.logoUrl || '';
+        companyWebsiteUrl = company.websiteUrl || '';
+        if(company.jobs){
+          for(let job of company.jobs){
+            companyJobs.push(
+              new FormGroup({
+                'title': new FormControl(job.title, Validators.required),
+                'jobId': new FormControl(job.id, Validators.required)
+              })
+            );
+          }
         }
-      }
+        this.companyForm = new FormGroup({
+          'name': new FormControl(companyName, Validators.required),
+          'imagePath': new FormControl(companyImagePath, Validators.required),
+          'websiteUrl': new FormControl(companyWebsiteUrl, Validators.required),
+          'description': new FormControl(companyDescription, Validators.required),
+          'jobs': companyJobs
+        });
+        this.companyForm.markAsPristine();
+        this.companyForm.markAsUntouched();
+      });
+    } else {
+      this.companyForm = new FormGroup({
+        'name': new FormControl(companyName, Validators.required),
+        'imagePath': new FormControl(companyImagePath, Validators.required),
+        'websiteUrl': new FormControl(companyWebsiteUrl, Validators.required),
+        'description': new FormControl(companyDescription, Validators.required),
+        'jobs': companyJobs
+      });
+      this.companyForm.markAsPristine();
+      this.companyForm.markAsUntouched();
     }
-
-    this.companyForm = new FormGroup({
-      'name': new FormControl(companyName, Validators.required),
-      'imagePath': new FormControl(companyImagePath, Validators.required),
-      'websiteUrl': new FormControl(companyWebsiteUrl, Validators.required),
-      'description': new FormControl(companyDescription, Validators.required),
-      'jobs': companyJobs
-    });
-    // Reset form state so Save works on subsequent edits
-    this.companyForm.markAsPristine();
-    this.companyForm.markAsUntouched();
   }
 
   get controls() { // a getter!
