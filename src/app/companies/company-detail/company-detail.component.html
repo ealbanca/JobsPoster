@@ -1,7 +1,7 @@
 <div class="row" style="align-items: center;">
     <div class="col-xs-8">
-        <img [src]="company.logoUrl"
-            alt="{{company.name}}"
+        <img [src]="(company$ | async)?.logoUrl"
+            alt="{{(company$ | async)?.name}}"
             class="img-responsive"
             style="max-height: 300px;">
     </div>
@@ -19,17 +19,17 @@
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <h1><strong>{{company.name}}</strong></h1>
+        <h1><strong>{{(company$ | async)?.name}}</strong></h1>
     </div>
 </div>
 <div class="row" style="margin-bottom: 2.5rem;">
     <div class="col-xs-12">
-        <a [href]="company.websiteUrl" target="_blank"><h4 style="margin-top: 0; margin-bottom: 0.5rem;">{{company.websiteUrl}}</h4></a>
+        <a [href]="(company$ | async)?.websiteUrl" target="_blank"><h4 style="margin-top: 0; margin-bottom: 0.5rem;">{{(company$ | async)?.websiteUrl}}</h4></a>
     </div>
 </div>
 <div class="row" style="margin-top: 2rem; margin-bottom: 2rem;">
     <div class="col-xs-12">
-        {{company.description}}
+        {{(company$ | async)?.description}}
     </div>
 </div>
 <div class="row">
@@ -37,7 +37,7 @@
         <ul class="list-group jobs-table">
             <li 
             class="list-group-item" 
-            *ngFor="let job of company.jobs">
+            *ngFor="let job of (company$ | async)?.jobs">
                 <strong>{{ job.title }}</strong> ({{ job.location }}) {{job.salary | currency:'USD':true:'1.0-0' }}
             </li>
         </ul>

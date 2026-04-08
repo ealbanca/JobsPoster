@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { Company } from '../company.model';
@@ -14,13 +15,21 @@ export class CompanyListComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private companiesChangedSubscription: Subscription;
   
-  constructor(private companyService: CompanyService) { }
+  constructor(private companyService: CompanyService,
+              private router: Router,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.subscription = this.companyService.getCompanies().subscribe((response: any) => {
       this.companies = response.companies;
     });
   }
+
+  onEditCompany() {
+    this.router.navigate(['edit'], { relativeTo: this.route });
+  }
+
+
 
   ngOnDestroy() {
     if (this.subscription) {

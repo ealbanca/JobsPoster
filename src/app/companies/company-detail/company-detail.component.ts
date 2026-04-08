@@ -3,6 +3,8 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { Company } from '../company.model';
 import { CompanyService } from '../company.service';
+import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-company-detail',
@@ -11,35 +13,31 @@ import { CompanyService } from '../company.service';
 })
 
 export class CompanyDetailComponent implements OnInit {
-  company: Company;
+  company$: Observable<Company>;
   id: number;
+
 
   constructor(private companyService: CompanyService,
               private route: ActivatedRoute,
-              private router: Router) { }
+              private router: Router,) {
+  }
 
   ngOnInit() {
     this.route.params
       .subscribe(
         (params: Params) => {
           this.id = +params['id'];
-          this.companyService.getCompany(this.id + '').subscribe(company => {
-            this.company = company;
-          });
+          this.company$ = this.companyService.getCompany(params['id']);
         }
       );
   }
 
-  onAddJob() {
-    this.router.navigate(['add-job'], {relativeTo: this.route});
-  }
-  
   onEditCompany() {
-    this.router.navigate(['edit'], {relativeTo: this.route});
+    this.router.navigate(['edit'], { relativeTo: this.route });
   }
 
   onDeleteCompany() {
-    this.companyService.deleteCompany(this.id + '').subscribe(() => {
+    this.companyService.deleteCompany(this.id.toString()).subscribe(() => {
       this.router.navigate(['/companies']);
     });
   }
