@@ -19,10 +19,10 @@
 </div>
 <div class="row">
     <div class="col-xs-12">
-        <h1>{{company.name}}</h1>
+        <h1><strong>{{company.name}}</strong></h1>
     </div>
 </div>
-<div class="row">
+<div class="row" style="margin-bottom: 2rem;">
     <div class="col-xs-12">
         {{company.description}}
     </div>
@@ -33,7 +33,7 @@
             <li 
             class="list-group-item" 
             *ngFor="let job of company.jobs">
-                {{ job.title }} - ({{ job.location }})
+                <strong>{{ job.title }}</strong> ({{ job.location }}) {{job.salary | currency:'USD':true:'1.0-0' }}
             </li>
         </ul>
     </div>
