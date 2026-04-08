@@ -27,7 +27,7 @@ export class CompanyDetailComponent implements OnInit {
       .subscribe(
         (params: Params) => {
           this.id = +params['id'];
-          this.company$ = this.companyService.getCompany(params['id']);
+          this.company$ = this.companyService.getCompany(this.id);
         }
       );
   }
@@ -37,9 +37,12 @@ export class CompanyDetailComponent implements OnInit {
   }
 
   onDeleteCompany() {
-    this.companyService.deleteCompany(this.id.toString()).subscribe(() => {
-      this.router.navigate(['/companies']);
-    });
-  }
+    this.company$.subscribe(company => {
+      if(company){
+      this.companyService.deleteCompany(company);
+        this.router.navigate(['/companies']);
+      }
+      });
+    }
 
 }

@@ -29,6 +29,10 @@ export class CompanyListComponent implements OnInit, OnDestroy {
     this.router.navigate(['edit'], { relativeTo: this.route });
   }
 
+  onNewCompany() {
+    this.router.navigate(['new'], { relativeTo: this.route });
+  }
+
 
 
   ngOnDestroy() {
