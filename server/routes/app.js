@@ -1,19 +1,29 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+const path = require ('path');
+const router = express.Router();
 
-// Create Express app
-const app = express();
-
-// Connect to MongoDB
-mongoose.connect('mongodb+srv://ealbanca:Slcw7278@jobpostercluster.frhemon.mongodb.net/').then(() => {
-    console.log('Connected to MongoDB');
-}).catch((err) => {
-    console.error('Connection Failed', err);
+// Get home page
+router.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-// Middleware
-app.use(bodyParser.json());
+module.exports = router;
 
-module.exports = app;
+//const mongoose = require('mongoose');
+//const bodyParser = require('body-parser');
+//
+//// Create Express app
+//const app = express();
+//
+//// Connect to MongoDB
+//mongoose.connect('mongodb+srv://ealbanca:Slcw7278@jobpostercluster.frhemon.mongodb.net/').then(() => {
+//    console.log('Connected to MongoDB');
+//}).catch((err) => {
+//    console.error('Connection Failed', err);
+//});
+//
+//// Middleware
+//app.use(bodyParser.json());
+//
+//module.exports = app;
 
