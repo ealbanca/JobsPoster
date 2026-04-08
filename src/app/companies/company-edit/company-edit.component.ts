@@ -27,21 +27,20 @@ export class CompanyEditComponent implements OnInit {
   }
 
   onSubmit(){
+    // Map imagePath to logoUrl for the Company model
+    const formValue = this.companyForm.value;
+    const companyData = {
+      ...formValue,
+      logoUrl: formValue.imagePath,
+    };
+    delete companyData.imagePath;
+
     if(this.editMode){
-      this.companyService.updateCompany(this.id, this.companyForm.value);
+      this.companyService.updateCompany(this.id, companyData);
     } else {
-      this.companyService.addCompany(this.companyForm.value);
+      this.companyService.addCompany(companyData);
     }
     this.onCancel();
-  }
-
-  onAddJob(){
-    (<FormArray>this.companyForm.get('jobs')).push(
-      new FormGroup({
-        'title': new FormControl(null, Validators.required),
-        'description': new FormControl(null, Validators.required)
-      })
-    );
   }
 
   onDeleteJob(index: number){
@@ -84,6 +83,9 @@ export class CompanyEditComponent implements OnInit {
       'description': new FormControl(companyDescription, Validators.required),
       'jobs': companyJobs
     });
+    // Reset form state so Save works on subsequent edits
+    this.companyForm.markAsPristine();
+    this.companyForm.markAsUntouched();
   }
 
   get controls() { // a getter!

@@ -80,13 +80,15 @@
                             <input 
                                 type="text" 
                                 class="form-control"
-                                formControlName="title">
+                                formControlName="title"
+                                readonly>
                         </div>
                         <div class="col-xs-2">
                             <input 
                                 type="number" 
                                 class="form-control"
-                                formControlName="jobId">
+                                formControlName="jobId"
+                                readonly>
                         </div>
                         <div class="col-xs-2">
                             <button
@@ -96,15 +98,6 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <button
-                            type="button"
-                            class="btn btn-success" 
-                            (click)="onAddJob()">Add Job</button>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </form>
