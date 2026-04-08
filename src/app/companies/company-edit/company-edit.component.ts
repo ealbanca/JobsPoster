@@ -70,7 +70,7 @@ export class CompanyEditComponent implements OnInit {
           companyJobs.push(
             new FormGroup({
               'title': new FormControl(job.title, Validators.required),
-              'description': new FormControl(job.description, Validators.required)
+              'jobId': new FormControl(job.id, Validators.required)
             })
           );
         }
