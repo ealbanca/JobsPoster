@@ -2,6 +2,11 @@ const { log } = require('@angular-devkit/build-angular/src/builders/ssr-dev-serv
 const mongoose = require('mongoose');
 
 const companySchema = new mongoose.Schema({
+  id: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   name: {
     type: String,
     required: true,

@@ -19,4 +19,22 @@ router.get('/', (req, res, next) => {
     });
 });
 
+//Get a single job by ID
+router.get('/:id', (req, res, next) => {
+  Job.findOne({ _id: req.params.id })
+    .then(job => {
+      if (job) {
+        res.status(200).json(job);
+      } else {
+        res.status(404).json({ message: 'Job not found' });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: 'An error occurred',
+        error: error
+      });
+    });
+});
+
 module.exports = router;

@@ -20,4 +20,22 @@ router.get('/', (req, res, next) => {
     });
 });
 
+//Get a single company by ID
+router.get('/:id', (req, res, next) => {
+  Company.findOne({ _id: req.params.id })
+    .then(company => {
+      if (company) {
+        res.status(200).json(company);
+      } else {
+        res.status(404).json({ message: 'Company not found' });
+      }
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: 'An error occurred',
+        error: error
+      });
+    });
+});
+
 module.exports = router;
