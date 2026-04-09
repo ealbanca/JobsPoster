@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 import { Company } from "./company.model";
 import { Job } from "../shared/job.model";
