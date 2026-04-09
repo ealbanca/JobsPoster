@@ -28,8 +28,15 @@ export class CompanyService {
         return this.http.get<Company>(`http://localhost:3000/companies/${index}`);
     }
 
-    addJobsToJobList(jobs: Job[]) {
-        this.jobsListService.addJobs(jobs);
+    getMaxCompanyId(): number {
+        let maxId = 0;
+        this.companies.forEach(company => {
+            const currentId = parseInt(company.id);
+            if (currentId > maxId) {
+                maxId = currentId;
+            }
+        });
+        return maxId;
     }
 
     addCompany(company: Company) {
