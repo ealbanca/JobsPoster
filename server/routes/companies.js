@@ -24,6 +24,7 @@ router.get('/', (req, res, next) => {
 //Get a single company by ID
 router.get('/:id', (req, res, next) => {
   Company.findOne({ _id: req.params.id })
+    .populate('jobs')
     .then(company => {
       if (company) {
         res.status(200).json(company);
