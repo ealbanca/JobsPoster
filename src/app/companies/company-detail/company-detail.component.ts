@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, Params } from '@angular/router';
+import { Component, OnInit} from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+
 
 import { Company } from '../company.model';
 import { CompanyService } from '../company.service';
-import { WindRefService } from '../../wind-ref.service';
 
 
 @Component({
@@ -12,40 +12,31 @@ import { WindRefService } from '../../wind-ref.service';
   styleUrls: ['./company-detail.component.css']
 })
 export class CompanyDetailComponent implements OnInit {
-company: Company | undefined;
-id: string;
-nativeWindow: any;
+company: Company;
+id: number;
 
-  constructor( private companyService: CompanyService,
-    private windowRefService: WindRefService,
-    private route : ActivatedRoute,
-    private router : Router,
-  ) { 
-    this.nativeWindow = windowRefService.getNativeWindow();
+  constructor(private companyService: CompanyService,
+    private route: ActivatedRoute,
+  private router: Router) {
+    
   }
 
   ngOnInit(){
     this.route.params.subscribe(
       (params: Params) => {
-        this.id = params['id'];
-        this.companyService.getCompany(this.id).subscribe(company => {
-          this.company = company;
-        });
+        this.id = +params['id'];
+        this.company = this.companyService.getCompany(this.id);
       }
     );
-
   }
 
-onView(){
-    if(this.company && this.company.websiteUrl) {
-      this.nativeWindow.open(this.company.websiteUrl);
+  onEditCompany(){
+    this.router.navigate(['edit'], {relativeTo: this.route});
+    //this.router.navigate(['../', this.id, 'edit'], {relativeTo: this.route});
   }
-}
 
-onDelete() {
-  if (this.company) {
-    this.companyService.deleteCompany(this.company);
+  onDeleteCompany(){
+    this.companyService.deleteCompany(this.id);
     this.router.navigate(['/companies']);
   }
-}
 }
