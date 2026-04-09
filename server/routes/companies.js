@@ -97,5 +97,29 @@ router.put('/:id', (req, res, next) => {
     });
 });
 
+//delete a company
+router.delete('/:id', (req, res, next) => {
+  Company.findOne({ _id: req.params.id })
+    .then(company => {
+      Company.deleteOne({ _id: req.params.id })
+        .then(result => {
+          res.status(204).json({
+            message: 'Company deleted successfully'
+          });
+        })
+        .catch(error => {
+          res.status(500).json({
+            message: 'An error occurred',
+            error: error
+          });
+        });
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Company not found',
+        error: error
+      });
+    });
+});
 
 module.exports = router;
