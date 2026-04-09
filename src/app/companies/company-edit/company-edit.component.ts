@@ -5,7 +5,6 @@ import { FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
 import { CompanyService } from '../company.service';
 
 @Component({
-  selector: 'app-company-edit',
   templateUrl: './company-edit.component.html',
   styleUrls: ['./company-edit.component.css']
 })
@@ -29,26 +28,28 @@ export class CompanyEditComponent implements OnInit {
   }
 
   onSubmit(){
-    //const newRecipe = new Recipe(
-    //  this.recipeForm.value['name'],
-    //  this.recipeForm.value['description'],
-    //  this.recipeForm.value['imagePath'],
-    //  this.recipeForm.value['ingredients']);
+    const value = this.companyForm.value;
+    const jobs = value.jobs ? value.jobs.map((j: any, idx: number) => ({
+      title: j.title,
+      location: this.editMode && this.companyService.getCompany(this.id).jobs[idx]
+        ? this.companyService.getCompany(this.id).jobs[idx].location
+        : j.location || '',
+      salary: j.salary
+    })) : [];
+    const newCompany = {
+      id: this.editMode ? String(this.id) : Date.now().toString(),
+      name: value.name,
+      logoUrl: value.logoUrl,
+      websiteUrl: value.websiteUrl,
+      description: value.description,
+      jobs: jobs
+    };
     if (this.editMode){
-      this.companyService.updateCompany(this.id, this.companyForm.value);
+      this.companyService.updateCompany(this.id, newCompany);
     } else {
-      this.companyService.addCompany(this.companyForm.value);
+      this.companyService.addCompany(newCompany);
     }
     this.onCancel();
-  }
-
-  onAddJob() {
-    (<FormArray>this.companyForm.get('jobs')).push(
-      new FormGroup({
-        'title': new FormControl(null, Validators.required),
-        'location': new FormControl(null, Validators.required)
-      })
-    );
   }
 
   onDeleteJob(index: number){
@@ -77,7 +78,7 @@ export class CompanyEditComponent implements OnInit {
           companyJobs.push(
             new FormGroup({
               'title': new FormControl(job.title, Validators.required),
-              'location': new FormControl(job.location, Validators.required)
+              'salary': new FormControl(job.salary, Validators.required)
             })
           );
         }
@@ -85,7 +86,7 @@ export class CompanyEditComponent implements OnInit {
     }
 
     this.companyForm = new FormGroup({
-      'title': new FormControl(companyName, Validators.required),
+      'name': new FormControl(companyName, Validators.required),
       'websiteUrl': new FormControl(companyWebsiteUrl, Validators.required),
       'logoUrl': new FormControl(companyLogoUrl, Validators.required),
       'description': new FormControl(companyDescription, Validators.required),
