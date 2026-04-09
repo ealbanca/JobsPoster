@@ -10,27 +10,33 @@ import { JobsListService } from "../jobs-list/jobs-list.service";
 export class CompanyService {
     companiesChanged = new Subject<Company[]>();
 
-    //private companies: Company[]  = [
-    //    new Company('Bandeja Paisa',
-    //        'A traditional Colombian dish',
-    //        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_V-_1Hnop7ugXvZQCdVriB8fTVOFz14VOckCTl5HjjDCSp3a0pp3d_ZSE4rZG4uLO_S1X5G6r4MimAFY5lJ5lpL7zYPiAPaFJ-xA1oA&s=10',
-    //    [
-    //        new Job('Rice', 1),
-    //        new Job('Beans', 1),
-    //        new Job('Avocado', 1),
-    //        new Job('Egg', 2),
-    //        new Job('Plantain', 1)
-    //    ] ),
-    //    new Company('Arepas', 
-    //        'Colombian dish made of ground maize dough or cooked flour',
-    //        'https://www.oliviascuisine.com/wp-content/uploads/2014/07/IMG_1370-1024x768.jpg',
-    //    [
-    //        new Job('Arepa dough', 1),
-    //        new Job('Cheese', 1)
-    //    ]),
-    //  ];
+    private companies: Company[]  = (() => {
+        const google = new Company(
+            'Google',
+            'Google is a technology company that specializes in internet-related services and products, including search engines, online advertising technologies, cloud computing, software, and hardware.',
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/2560px-Google_2015_logo.svg.png',
+            'https://www.google.com'
+        );
+        google.jobs = [
+            new Job(1, 'Software Engineer', 'Develop and maintain software applications.', 'Mountain View, CA', 120000, 'Full-time', 1),
+            new Job(2, 'Product Manager', 'Oversee product development and strategy.', 'Mountain View, CA', 110000, 'Full-time', 1)
+        ];
 
-    private companies: Company[] = [];
+        const microsoft = new Company(
+            'Microsoft',
+            'Microsoft Corporation is a multinational technology company that develops, manufactures, licenses, supports, and sells computer software, consumer electronics, personal computers, and related services.',
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/2560px-Microsoft_logo.svg.png',
+            'https://www.microsoft.com'
+        );
+        microsoft.jobs = [
+            new Job(3, 'Software Developer', 'Design and implement software solutions.', 'Redmond, WA', 115000, 'Full-time', 2),
+            new Job(4, 'Data Scientist', 'Analyze and interpret complex data to help make informed decisions.', 'Redmond, WA', 125000, 'Full-time', 2)
+        ];
+
+        return [google, microsoft];
+    })();
+
+    //private companies: Company[] = [];
 
     constructor(private jobsListService: JobsListService) {}
 
