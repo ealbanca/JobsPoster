@@ -20,12 +20,17 @@ export class CompanyListComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute) {}
 
   ngOnInit(){
-    this.subscription =this.companyService.companiesChanged
-    .subscribe(
-      (companies: Company[]) => {
+    // Subscribe to companiesChanged if you want to keep local updates
+    this.subscription = this.companyService.companiesChanged
+      .subscribe((companies: Company[]) => {
         this.companies = companies;
-      } );
-    this.companies = this.companyService.getCompanies();
+      });
+
+    // Fetch companies from backend on init
+    this.companyService.getCompanies().subscribe((companies: Company[]) => {
+      this.companies = companies;
+      this.companyService.setCompanies(companies); // update the service's local array and notify subscribers
+    });
   }
 
   onNewCompany(){
