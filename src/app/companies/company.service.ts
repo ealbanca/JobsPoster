@@ -14,7 +14,7 @@ export class CompanyService {
         const google = new Company(
             'Google',
             'Google is a technology company that specializes in internet-related services and products, including search engines, online advertising technologies, cloud computing, software, and hardware.',
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/2560px-Google_2015_logo.svg.png',
+            'https://cdn.iconscout.com/icon/free/png-256/free-google-icon-svg-download-png-1507807.png',
             'https://www.google.com'
         );
         google.jobs = [
@@ -25,7 +25,7 @@ export class CompanyService {
         const microsoft = new Company(
             'Microsoft',
             'Microsoft Corporation is a multinational technology company that develops, manufactures, licenses, supports, and sells computer software, consumer electronics, personal computers, and related services.',
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/2560px-Microsoft_logo.svg.png',
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Microsoft_365_%282022%29.svg/960px-Microsoft_365_%282022%29.svg.png?_=20231004051714',
             'https://www.microsoft.com'
         );
         microsoft.jobs = [
