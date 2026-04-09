@@ -63,12 +63,14 @@ export class CompanyEditComponent implements OnInit {
     let companyName = '';
     let companyLogoUrl = '';
     let companyDescription = '';
+    let companyWebsiteUrl = '';
     let companyJobs: FormArray<FormGroup> = new FormArray<FormGroup>([]);
 
     if (this.editMode) {
       const company = this.companyService.getCompany(this.id);
       companyName = company.name;
       companyLogoUrl = company.logoUrl;
+      companyWebsiteUrl = company.websiteUrl;
       companyDescription = company.description;
       if (company['jobs']) {
         for (let job of company.jobs) {
@@ -83,7 +85,8 @@ export class CompanyEditComponent implements OnInit {
     }
 
     this.companyForm = new FormGroup({
-      'name': new FormControl(companyName, Validators.required),
+      'title': new FormControl(companyName, Validators.required),
+      'websiteUrl': new FormControl(companyWebsiteUrl, Validators.required),
       'logoUrl': new FormControl(companyLogoUrl, Validators.required),
       'description': new FormControl(companyDescription, Validators.required),
       'jobs': companyJobs
