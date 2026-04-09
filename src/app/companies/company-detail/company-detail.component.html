@@ -1,23 +1,25 @@
-<div class="row">
-    <div class="col-md-8">
-        <div class="panel panel-default">
-            <div class="panel-heading clearfix">
-                <h1 class="panel-title pull-left" style="font-size: 24px; margin: 0;">{{ (company$ | async)?.name }}</h1>
-                <div class="clearfix"></div>
-                <img [src]="(company$ | async)?.logoUrl" alt="{{ (company$ | async)?.name }}" class="img-responsive pull-left" style="max-height: 60px;">
-                <div class="pull-right">
-                    <a class="btn btn-primary" [routerLink]="['/companies', (company$ | async)?.id, 'edit']">Edit</a>
-                    <a class="btn btn-danger" (click)="onDeleteCompany()">Delete</a>
-                </div>
-            </div>
-        <div class="panel-body">
-            <div class="list-group-item clearfix">
-                <div class="pull-left">
-                    <p class="list-group-item-text"><strong>Description:</strong> {{ (company$ | async)?.description }}</p>
-                    <p class="list-group-item-text"><strong>Website:</strong> <a [href]="(company$ | async)?.websiteUrl" target="_blank">{{ (company$ | async)?.websiteUrl }}</a></p>
-                </div>
-            </div>
-        </div>
-        </div>
+<div class="panel panel-default" xmlns="http://www.w3.org/1999/html">
+  <div class="panel-heading">
+    <div class="row pad-all">
+      <h4 class="title margin-left-right">{{company?.name}}</h4>
+      <div class="row pull-right margin-left-right">
+        <a class="btn btn-primary"(click)="onView()">View</a>
+        <a [routerLink]="['/companies', company?.id, 'edit']" class="btn btn-info">Edit</a>
+        <a class="btn btn-danger" (click)="onDelete()">Delete</a>
+      </div>
     </div>
+  </div>
+  <div class="panel-body">
+    <div class="pad-left-right">
+      <div class="row">
+        <label>Description:</label>
+        <span class="label-value">{{company?.description}}</span>
+      </div>
+      <br>
+      <div class="row">
+        <label>Website:</label>
+        <span class="label-value">{{company?.websiteUrl}}</span>
+      </div>
+    </div>
+  </div>
 </div>

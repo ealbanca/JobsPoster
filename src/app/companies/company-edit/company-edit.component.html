@@ -27,7 +27,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="form-group">
-                        <label for="imagePath">Logo Image URL</label>
+                        <label for="imagePath">Image URL</label>
                         <input 
                         type="text" 
                         id="imagePath" 
@@ -42,20 +42,6 @@
                     <img [src]="imagePath.value" class="img-responsive">
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="form-group">
-                        <label for="websiteUrl">Website URL</label>
-                        <input 
-                        type="text" 
-                        id="websiteUrl" 
-                        formControlName="websiteUrl"
-                        class="form-control"
-                        #websiteUrl>
-                    </div>
-                </div>
-            </div>
-
             <div class="row">
                 <div class="col-xs-12">
                     <div class="form-group">
@@ -80,24 +66,31 @@
                             <input 
                                 type="text" 
                                 class="form-control"
-                                formControlName="title"
-                                readonly>
+                                formControlName="title">
                         </div>
                         <div class="col-xs-2">
                             <input 
-                                type="number" 
+                                type="text" 
                                 class="form-control"
-                                formControlName="jobId"
-                                readonly>
+                                formControlName="location">
                         </div>
                         <div class="col-xs-2">
                             <button
                             type="button"
                             class="btn btn-danger"
-                            (click)="onDeleteJob(i)">X</button>
+                            (click)="onDeleteIngredient(i)">X</button>
                         </div>
                     </div>
                     <hr>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <button
+                            type="button"
+                            class="btn btn-success" 
+                            (click)="onAddIngredient()">Add Ingredient</button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </form>
