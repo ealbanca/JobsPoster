@@ -24,24 +24,26 @@
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-xs-12">
-        <a [href]="company.websiteUrl" target="_blank">{{company.websiteUrl}}</a>
-    </div>
+
+<div class="row company-detail-section">
+  <div class="col-xs-12">
+    <a [href]="company.websiteUrl" target="_blank">{{ company.websiteUrl }}</a>
+  </div>
 </div>
-<div class="row">
-    <div class="col-xs-12">
-        {{company.description}}
-    </div>
+
+<div class="row company-detail-section">
+  <div class="col-xs-12">
+    {{ company.description }}
+  </div>
 </div>
-<div class="row">
-    <div class="col-xs-12">
-        <ul class="list-group">
-            <li 
-            class="list-group-item" 
-            *ngFor="let job of company.jobs">
-                {{ job.title }} - ({{ job.location }})
-            </li>
-        </ul>
-    </div>
+
+<div class="row company-detail-section">
+  <div class="col-xs-12">
+    <h3>Job Openings</h3>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let job of company.jobs">
+        {{ job.title }} - ({{ job.location }}) - ${{ job.salary }}
+      </li>
+    </ul>
+  </div>
 </div>
