@@ -1,16 +1,18 @@
 <div class="row">
-    <div class="col-xs-10">
-        <app-jobs-edit></app-jobs-edit>
-        <hr>
-        <ul class="list-group">
-            <a 
-            class="list-group-item" 
-            style="cursor:pointer"
-            *ngFor = "let job of jobs; let i = index"
-            (click)="onEditItem(i)"
-            >
-            {{ job.title }} ({{ job.location }}) - ${{ job.salary }} - {{ job.type }}
-        </a>
-        </ul>
-    </div>
+  <div class="col-xs-5">
+    <ul class="list-group">
+      <a
+        class="list-group-item" 
+        style="cursor:pointer"
+        routerLinkActive="active"
+        *ngFor="let job of jobs; let i = index"
+        [routerLink]="[i]"
+        (click)="onEditItem(i)">
+        {{ job.title }} ({{ job.location }}) - ${{ job.salary }} - {{ job.type }}
+      </a>
+    </ul>
+  </div>
+  <div class="col-xs-7">
+    <app-jobs-edit></app-jobs-edit>
+  </div>
 </div>
