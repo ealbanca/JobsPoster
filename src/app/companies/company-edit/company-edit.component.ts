@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
-import { CompanyService} from '../company.service';
+import { Company } from '../company.model';
+import { CompanyService } from '../company.service';
 
 
 @Component({
@@ -11,90 +12,51 @@ import { CompanyService} from '../company.service';
   styleUrls: ['./company-edit.component.css']
 })
 export class CompanyEditComponent implements OnInit {
-  id: number;
-  editMode = false;
-  companyForm: FormGroup;
+  originalCompany: Company | undefined;
+  company: Company = new Company('', '', '', '');
+  editMode: boolean = false;
 
-  constructor(private route: ActivatedRoute,
-    private companyService: CompanyService,
-    private router: Router) { }
+  constructor(private companyService: CompanyService,
+              private router: Router,
+              private route: ActivatedRoute) { }
 
   ngOnInit(){
-    this.route.params.subscribe(
-      (params : Params ) => {
-        this.id = +params['id'];
-        this.editMode = params['id'] != null;
-        this.initForm();
+    this.route.params.subscribe((params: Params) => {
+      const id = params['id'];
+      if (id === undefined || id === null) {
+        this.editMode = false;
+        return;
       }
-    );
+      else {
+        this.companyService.getCompany(id).subscribe(company => {
+          this.originalCompany = company;
+          if (this.originalCompany === undefined || this.originalCompany === null) {
+            return;
+          }
+          else {
+            this.editMode = true;
+            this.company = JSON.parse(JSON.stringify(this.originalCompany));
+          }
+        });
+      }
+    });  
   }
 
-  onSubmit(){
-    //const newRecipe = new Recipe(
-    //  this.recipeForm.value['name'],
-    //  this.recipeForm.value['description'],
-    //  this.recipeForm.value['imagePath'],
-    //  this.recipeForm.value['ingredients']);
-    if (this.editMode){
-      this.companyService.updateCompany(this.id, this.companyForm.value);
+  onSubmit(form: NgForm){
+    const value = form.value;
+    const newCompany = new Company(value.name, value.description, value.logoUrl, value.websiteUrl);
+    if (this.editMode) {
+      if (this.originalCompany) {
+        this.companyService.updateCompany(this.originalCompany, newCompany);
+      }
     } else {
-      this.companyService.addCompany(this.companyForm.value);
+      this.companyService.addCompany(newCompany);
     }
-    this.onCancel();
-  }
-
-  onAddIngredient(){
-    (<FormArray>this.companyForm.get('ingredients')).push(
-      new FormGroup({
-        'name': new FormControl(null, Validators.required),
-        'amount': new FormControl(null,[
-          Validators.required,
-          Validators.pattern(/^[1-9]+[0-9]*$/)
-        ])
-      })
-    );
-  }
-
-  onDeleteIngredient(index: number){
-    (<FormArray>this.companyForm.get('ingredients')).removeAt(index);
+    this.router.navigate(['/companies']);
   }
 
   onCancel(){
-    this.router.navigate(['../'], {relativeTo: this.route});
+    this.router.navigate(['/companies']);
   }
 
-  private initForm(){
-    let companyName = '';
-    let companyLogoUrl = '';
-    let companyDescription = '';
-    let companyJobs = new FormArray([]);
-
-    if(this.editMode){
-      const company  = this.companyService.getCompany(this.id);
-      companyName = company.name;
-      companyLogoUrl = company.logoUrl;
-      companyDescription = company.description;
-        if(company['jobs']){
-          for(let job of company.jobs){
-            companyJobs.push(
-              new FormGroup({
-                'title': new FormControl(job.title, Validators.required),
-                'location': new FormControl(job.location, Validators.required)
-              })
-            );
-          }
-        }
-    }
-
-    this.companyForm = new FormGroup({
-      'name': new FormControl(companyName, Validators.required),
-      'logoUrl': new FormControl(companyLogoUrl, Validators.required),
-      'description': new FormControl(companyDescription, Validators.required),
-      'jobs': companyJobs
-    });
-  }
-
-  get controls() { // a getter!
-    return (<FormArray>this.companyForm.get('jobs')).controls;
-  }
 }
