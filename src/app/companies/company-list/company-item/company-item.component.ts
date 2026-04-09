@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Company } from '../../company.model';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+
+import  { Company } from '../../company.model';
 
 @Component({
   selector: 'app-company-item',
@@ -8,8 +9,13 @@ import { Company } from '../../company.model';
 })
 export class CompanyItemComponent implements OnInit {
   @Input() company: Company;
+  @Output() companySelected = new EventEmitter<void>();
+  constructor() { }
 
-  ngOnInit(){    
+  ngOnInit(){
   }
 
+  onSelectedCompany() {
+    this.companySelected.emit();
+  }
 }
