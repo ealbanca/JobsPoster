@@ -25,7 +25,6 @@ export class CompanyListComponent implements OnInit, OnDestroy {
       .subscribe((companies: Company[]) => {
         this.companies = companies;
       });
-
     // Fetch companies from backend on init
     this.companyService.getCompanies().subscribe((companies: Company[]) => {
       this.companies = companies;
