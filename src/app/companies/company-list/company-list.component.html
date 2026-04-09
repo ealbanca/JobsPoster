@@ -1,17 +1,16 @@
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <div class="row pad-left-right">
-      <span class="pull-left title">Companies</span>
-      <a routerLink="/companies/new" class="btn btn-success pull-right">Add Company</a>
+<div class="row">
+    <div class="col-xs-12">
+        <button class="btn btn-success" (click)="onNewCompany()">New Company</button>
     </div>
-  </div>
-  <div class="panel-body">
-    <div class="center-panel">
-      <app-company-item
-        *ngFor="let company of companies"
-        [company]="company">
-      </app-company-item>
-    </div>
-  </div>
-
 </div>
+    <hr>
+<div class="row">
+    <div class="col-xs-12">
+        <app-company-item 
+    *ngFor="let companyEl of companies; let i = index"
+    [company]="companyEl"
+    [index]="i"
+    ></app-company-item>
+    </div>
+</div>
+

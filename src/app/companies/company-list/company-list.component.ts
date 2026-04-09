@@ -1,40 +1,38 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnDestroy, OnInit} from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { Company } from '../company.model';
 import { CompanyService } from '../company.service';
+import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-company-list',
   templateUrl: './company-list.component.html',
-  styleUrls: ['./company-list.component.css']
+  styleUrls: ['./company-list.component.css']  
 })
 export class CompanyListComponent implements OnInit, OnDestroy {
-  companies: Company[] = [];
-  private subscription: Subscription;
-  private changeSub: Subscription;
+  companies: Company[];
+  subscription: Subscription;
 
-  constructor(private companyService: CompanyService) {}
+  constructor(private companyService: CompanyService,
+    private router: Router,
+    private route: ActivatedRoute) {}
 
-  ngOnInit() {
-    // Subscribe to changes in the company list
-    this.changeSub = this.companyService.companyListChangedEvent.subscribe((companies: Company[]) => {
-      this.companies = companies;
-    });
-    // Fetch the initial list from the backend
-    this.subscription = this.companyService.getCompanies().subscribe((response: any) => {
-      this.companies = response.companies ? response.companies : response;
-      this.companyService.companies = this.companies;
-      this.companyService.sortAndSend();
-    });
+  ngOnInit(){
+    this.subscription =this.companyService.companiesChanged
+    .subscribe(
+      (companies: Company[]) => {
+        this.companies = companies;
+      } );
+    this.companies = this.companyService.getCompanies();
   }
 
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-    if (this.changeSub) {
-      this.changeSub.unsubscribe();
-    }
+  onNewCompany(){
+    this.router.navigate(['new'], { relativeTo: this.route });
+  }
+
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
   }
 }
