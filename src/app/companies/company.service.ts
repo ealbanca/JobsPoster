@@ -1,116 +1,68 @@
-import { Injectable, EventEmitter} from "@angular/core";
+import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
-import{ HttpClient, HttpHeaders } from "@angular/common/http";
 
 import { Company } from "./company.model";
+import { Job } from "../shared/job.model";
+import { JobsListService } from "../jobs-list/jobs-list.service";
 
-@Injectable({
-  providedIn: 'root'
-})
+
+@Injectable()
 export class CompanyService {
-    companyListChangedEvent = new Subject<Company[]>();
-    companySelectedEvent = new EventEmitter<Company>();
-    companies: Company[] = [];
-    companyChangedEvent = new EventEmitter<Company[]>();
-    maxCompanyId: number;
+    companiesChanged = new Subject<Company[]>();
 
-    constructor(private http: HttpClient) { 
-        this.companies = []; // Initialize with empty array
-        this.maxCompanyId = this.getMaxId();
+    //private companies: Company[]  = [
+    //    new Company('Bandeja Paisa',
+    //        'A traditional Colombian dish',
+    //        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_V-_1Hnop7ugXvZQCdVriB8fTVOFz14VOckCTl5HjjDCSp3a0pp3d_ZSE4rZG4uLO_S1X5G6r4MimAFY5lJ5lpL7zYPiAPaFJ-xA1oA&s=10',
+    //    [
+    //        new Job('Rice', 1),
+    //        new Job('Beans', 1),
+    //        new Job('Avocado', 1),
+    //        new Job('Egg', 2),
+    //        new Job('Plantain', 1)
+    //    ] ),
+    //    new Company('Arepas', 
+    //        'Colombian dish made of ground maize dough or cooked flour',
+    //        'https://www.oliviascuisine.com/wp-content/uploads/2014/07/IMG_1370-1024x768.jpg',
+    //    [
+    //        new Job('Arepa dough', 1),
+    //        new Job('Cheese', 1)
+    //    ]),
+    //  ];
+
+    private companies: Company[] = [];
+
+    constructor(private jobsListService: JobsListService) {}
+
+    setCompanies(companies: Company[]) {
+        this.companies = companies;
+        this.companiesChanged.next(this.companies.slice());
     }
-
-    /*storeCompanies() {
-        const companies = JSON.stringify(this.companies);
-        const headers = new HttpHeaders({'Content-Type': 'application/json'});
-        this.http.put(
-            'https://cms-project-fca75-default-rtdb.firebaseio.com/companies.json',
-            companies,
-            { headers: headers }
-        ).subscribe(
-            () => {
-                this.companyListChangedEvent.next(this.companies.slice());
-            },
-            (error) => {
-                console.error('Error storing companies to server:', error);
-            }
-        );
-    }*/
 
     getCompanies() {
-        return this.http.get<Company[]>('http://localhost:3000/companies');
+        return this.companies.slice();// slice is used to return a copy of the array
     }
 
-    getCompany(id: string) {
-        return this.http.get<Company>(`http://localhost:3000/companies/${id}`);
+    getCompany(index: number) {
+        return this.companies[index];
     }
 
-    getMaxId(): number {
-        let maxId = 0;
-        this.companies.forEach(company => {
-            const currentId = parseInt(company.id);
-            if (currentId > maxId) {
-                maxId = currentId;
-            }
-        });
-        return maxId;
-        }
+    addJobsToJobList(jobs: Job[]) {
+        this.jobsListService.addJobs(jobs);
+    }
 
     addCompany(company: Company) {
-        if (!company) {
-            return;
-        }
-        company.id = '';
-        const headers = new HttpHeaders({'Content-Type': 'application/json'});
-        // add to database
-        this.http.post<{ message: string, company: Company }>(
-            'http://localhost:3000/companies',
-            company,
-            { headers: headers })
-            .subscribe(
-                (responseData) => {
-                    this.companies.push(responseData.company);
-                    this.sortAndSend();
-                }
-            );
+        this.companies.push(company);
+        this.companiesChanged.next(this.companies.slice());
     }
 
-    updateCompany(originalCompany: Company, newCompany: Company) {
-        if (!originalCompany || !newCompany) {
-            return;
-        }
-        const pos = this.companies.findIndex(c => c.id === originalCompany.id);
-        if (pos < 0) {
-            return;
-        }
-        newCompany.id = originalCompany.id;
-        const headers = new HttpHeaders({'Content-Type': 'application/json'});
-        this.http.put(
-            'http://localhost:3000/companies/' + originalCompany.id,
-            newCompany,{ headers: headers })
-            .subscribe(
-                (response: any) => {
-                    this.companies[pos] = newCompany;
-                    this.sortAndSend();
-                }
-            );
+    updateCompany(index: number, newCompany: Company) {
+        this.companies[index] = newCompany;
+        this.companiesChanged.next(this.companies.slice());
     }
 
-    deleteCompany(company: Company) {
-        if (!company || company === undefined) {
-            return;
-        }
-        this.http.delete('http://localhost:3000/companies/' + company.id)
-            .subscribe((response: any) => {
-                // After deletion, fetch the updated list from backend
-                this.getCompanies().subscribe((res: any) => {
-                    this.companies = res.companies ? res.companies : res;
-                    this.sortAndSend();
-                });
-            });
+    deleteCompany(index: number) {
+        this.companies.splice(index, 1);
+        this.companiesChanged.next(this.companies.slice());
     }
-    public sortAndSend() {
-        this.companies.sort((a, b) => a.name.localeCompare(b.name));
-        this.companyListChangedEvent.next(this.companies.slice());
-    }
-
 }

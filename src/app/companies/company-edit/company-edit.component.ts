@@ -42,14 +42,11 @@ export class CompanyEditComponent implements OnInit {
     this.onCancel();
   }
 
-  onAddJob(){
+  onAddJob() {
     (<FormArray>this.companyForm.get('jobs')).push(
       new FormGroup({
-        'name': new FormControl(null, Validators.required),
-        'amount': new FormControl(null,[
-          Validators.required,
-          Validators.pattern(/^[1-9]+[0-9]*$/)
-        ])
+        'title': new FormControl(null, Validators.required),
+        'location': new FormControl(null, Validators.required)
       })
     );
   }
@@ -62,27 +59,27 @@ export class CompanyEditComponent implements OnInit {
     this.router.navigate(['../'], {relativeTo: this.route});
   }
 
-  private initForm(){
+  private initForm() {
     let companyName = '';
     let companyLogoUrl = '';
     let companyDescription = '';
-    let companyJobs = new FormArray([]);
+    let companyJobs: FormArray<FormGroup> = new FormArray<FormGroup>([]);
 
-    if(this.editMode){
+    if (this.editMode) {
       const company = this.companyService.getCompany(this.id);
       companyName = company.name;
-      companyLogoUrl = company.logoUrl; 
+      companyLogoUrl = company.logoUrl;
       companyDescription = company.description;
-        if(company['jobs']){
-          for(let job of company.jobs){
-            companyJobs.push(
-              new FormGroup({
-                'name': new FormControl(job.name, Validators.required),
-                'amount': new FormControl(job.amount, Validators.required)
-              })
-            );
-          }
+      if (company['jobs']) {
+        for (let job of company.jobs) {
+          companyJobs.push(
+            new FormGroup({
+              'title': new FormControl(job.title, Validators.required),
+              'location': new FormControl(job.location, Validators.required)
+            })
+          );
         }
+      }
     }
 
     this.companyForm = new FormGroup({
