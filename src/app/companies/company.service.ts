@@ -25,7 +25,7 @@ export class CompanyService {
     }
 
     getCompany(index: number) {
-        return this.companies[index];
+        return this.http.get<Company>(`http://localhost:3000/companies/${index}`);
     }
 
     addJobsToJobList(jobs: Job[]) {

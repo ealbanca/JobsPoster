@@ -24,8 +24,10 @@ id: number;
   ngOnInit(){
     this.route.params.subscribe(
       (params: Params) => {
-        this.id = +params['id'];
-        this.company = this.companyService.getCompany(this.id);
+        this.id = params['id'];
+        this.companyService.getCompany(this.id).subscribe(company => {
+          this.company = company;
+        });
       }
     );
   }
