@@ -5,3 +5,7 @@
 .img-responsive {
   margin-bottom: 20px;
 }
+
+.list-group-item:nth-child(odd) {
+  background-color: #a1d4fd;
+}
