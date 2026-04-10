@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
 import { map } from 'rxjs/operators';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 import { Company } from "./company.model";
 import { Job } from "../shared/job.model";
@@ -9,8 +9,12 @@ import { JobsListService } from "../jobs-list/jobs-list.service";
 
 @Injectable()
 export class CompanyService {
+    companyListChanged = new Subject<Company[]>();
+    companySelected = new Subject<Company>();
+    companies: Company[] = [];
     companiesChanged = new Subject<Company[]>();
-    private companies: Company[] = [];
+    maxCompanyId: number;
+    
 
     constructor(private jobsListService: JobsListService, private http: HttpClient) {}
 
@@ -39,9 +43,20 @@ export class CompanyService {
         return maxId;
     }
 
-    addCompany(company: Company) {
-        this.companies.push(company);
-        this.companiesChanged.next(this.companies.slice());
+    addCompany(newCompany: Company) {
+        if (!newCompany || newCompany === undefined){
+            return;
+        }
+        newCompany.id = '';
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+        this.http.post<{ message: string, company: Company }>(
+            "http://localhost:3000/companies", 
+            newCompany, 
+            { headers: headers }
+        ).subscribe(response => {
+                this.companies.push(response.company);
+                this.companiesChanged.next(this.companies.slice());
+            });
     }
 
     updateCompany(index: number, newCompany: Company) {

@@ -38,7 +38,7 @@ export class JobsEditComponent implements OnInit, OnDestroy {
 
   onSubmit(form: NgForm) {
     const value = form.value;
-    const newJob = new Job(0, value.title, value.description, value.location, value.salary, value.type, 0);
+    const newJob = new Job('0', value.title, value.description, value.location, value.salary, value.type, '0');
     if (this.editMode) {
       this.jobsListService.updateJob(this.editedItemIndex, newJob);
     } else {

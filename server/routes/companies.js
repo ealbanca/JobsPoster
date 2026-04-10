@@ -23,7 +23,7 @@ router.get('/', (req, res, next) => {
 
 //Get a single company by ID
 router.get('/:id', (req, res, next) => {
-  Company.findOne({ _id: req.params.id })
+  Company.findOne({ id: req.params.id })
     .populate('jobs')
     .then(company => {
       if (company) {
@@ -70,14 +70,14 @@ router.post('/', (req, res, next) => {
 //update a company
 
 router.put('/:id', (req, res, next) => {
-  Company.findOne({ _id: req.params.id })
+  Company.findOne({ id: req.params.id })
     .then(company => {
       company.name = req.body.name;
       company.description = req.body.description;
       company.logoUrl = req.body.logoUrl;
       company.websiteUrl = req.body.websiteUrl;
       company.jobs = req.body.jobs;
-      Company.updateOne({ _id: req.params.id }, company)
+      Company.updateOne({ id: req.params.id }, company)
         .then(result => {
           res.status(204).json({
             message: 'Company updated successfully'
@@ -100,9 +100,9 @@ router.put('/:id', (req, res, next) => {
 
 //delete a company
 router.delete('/:id', (req, res, next) => {
-  Company.findOne({ _id: req.params.id })
+  Company.findOne({ id: req.params.id })
     .then(company => {
-      Company.deleteOne({ _id: req.params.id })
+      Company.deleteOne({ id: req.params.id })
         .then(result => {
           res.status(204).json({
             message: 'Company deleted successfully'
