@@ -102,4 +102,29 @@ router.put('/:id', (req, res, next) => {
     });
 });
 
+// Delete a job
+router.delete('/:id', (req, res, next) => {
+  Job.findOne({ id: req.params.id })
+    .then(job => {
+      Job.deleteOne({ id: req.params.id })
+        .then(result => {
+          res.status(204).json({
+            message: 'Job deleted successfully'
+          });
+        })
+        .catch(error => {
+          res.status(500).json({
+            message: 'An error occurred',
+            error: error
+          });
+        });
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Job not found',
+        error: error
+      });
+    }); 
+});
+
 module.exports = router;
