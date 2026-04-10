@@ -17,7 +17,7 @@
                     Manage Company<span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a style="cursor: pointer;" (click)="onEditCompany()">Edit Company</a></li>
+                    <li><a style="cursor: pointer;" [routerLink]="['/companies', (company$ |async)?.id, 'edit']">Edit Company</a></li>
                     <li><a style="cursor: pointer;" (click)="onDeleteCompany()">Delete Company</a></li>
                 </ul>
             </div>

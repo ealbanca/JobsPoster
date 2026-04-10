@@ -46,8 +46,8 @@ app.use((req, res, next) => {
     next();
 });
 
-//Tell express to use the specified directory as the root directory for your web site
-app.use(express.static(path.join(__dirname, 'public')));
+// Tell express to use the Angular dist/browser folder for static files
+app.use(express.static(path.join(__dirname, 'dist/JobsPoster/browser')));
 
 //tell express to map the default route to the index route
 app.use('/', index);
@@ -56,9 +56,9 @@ app.use('/', index);
 app.use('/companies', companyRoutes);
 app.use('/jobs', jobRoutes);
 
-// Tell express to map all other non-defined routes back to the index page (Express 4.x compatible)
-app.all('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist/cms/browser'));
+// Tell express to map all other non-defined routes back to the Angular index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist/JobsPoster/browser/index.html'));
 });
 
 // Define the port address and tell express to use this port

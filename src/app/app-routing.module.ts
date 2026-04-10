@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CompaniesComponent } from './companies/companies.component';
 import { CompanyDetailComponent } from './companies/company-detail/company-detail.component';
 import { CompanyEditComponent } from './companies/company-edit/company-edit.component';
-import { CompanyStartComponent } from './companies/company-start/company-start.component';
+import { JobsEditComponent } from './jobs-list/jobs-edit/jobs-edit.component';
 import { JobsListComponent } from './jobs-list/jobs-list.component';
 
 
@@ -18,9 +18,8 @@ const appRoutes: Routes = [
     ]
     },
     {path: 'jobs', component: JobsListComponent, children: [
-        {path: ':id', component: CompanyDetailComponent},
-        {path: ':id/edit', component: CompanyEditComponent},
-        {path: 'new', component: CompanyEditComponent}
+        {path: ':id/edit', component: JobsEditComponent},
+        {path: 'new', component: JobsEditComponent},
     ]
     },
 

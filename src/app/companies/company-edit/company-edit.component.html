@@ -61,18 +61,6 @@
                 <div class="col-xs-12">
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea
-                            id="description"
-                            name="description"
-                               [(ngModel)]="company.description"
-                               class="form-control"></textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="form-group">
-                        <label for="description">Description</label>
                         <textarea 
                         type="text"
                         id="description"
@@ -85,17 +73,16 @@
             </div>
             <hr>
             <div class="row">
-                <div class="col-xs-12" formArrayName="jobs">
+                <div class="col-xs-12">
                     <div 
                     class="row"
                     *ngFor="let job of company.jobs; let i = index"
-                    [formGroupName]="i"
                     style="margin-top: 10px;">
                         <div class="col-xs-8">
                             <input 
                                 type="text" 
                                 class="form-control" 
-                                formControlName="title" 
+                                [value]="job.title" 
                                 placeholder="Job Title" 
                                 readonly>
                         </div>

@@ -29,10 +29,6 @@ id: string;
     });
   }
 
-  onEditCompany(){
-    this.router.navigate(['edit'], {relativeTo: this.route});
-  }
-
   onDeleteCompany(){
     this.company$.subscribe(company => {
       if (company) {
