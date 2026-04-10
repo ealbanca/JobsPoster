@@ -59,9 +59,24 @@ export class CompanyService {
             });
     }
 
-    updateCompany(index: number, newCompany: Company) {
-        this.companies[index] = newCompany;
-        this.companiesChanged.next(this.companies.slice());
+    updateCompany(originalCompany: Company, newCompany: Company) {
+        if (!originalCompany || !newCompany || originalCompany === undefined || newCompany === undefined) {
+            return;
+        }
+        const pos = this.companies.findIndex(c => c.id === originalCompany.id);
+        if (pos < 0) {
+            return;
+        }
+        newCompany.id = originalCompany.id;
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+        this.http.put(
+            `http://localhost:3000/companies/${originalCompany.id}`,
+            newCompany,
+            { headers: headers }
+        ).subscribe(response => {
+            this.companies[pos] = newCompany;
+            this.companiesChanged.next(this.companies.slice());
+        });
     }
 
     deleteCompany(index: number) {
