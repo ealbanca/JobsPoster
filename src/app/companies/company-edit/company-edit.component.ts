@@ -47,24 +47,18 @@ export class CompanyEditComponent implements OnInit {
 
 
   onSubmit(form: NgForm) {
-    const value = form.value;
-    const newCompany = new Company(
-      this.company.id,
-      value.name,
-      value.description,
-      value.logoUrl,
-      value.websiteUrl,
-      this.company.jobs
-    );
     if (this.editMode) {
-      this.companyService.updateCompany(this.originalCompany, newCompany);
+      this.companyService.updateCompany(this.originalCompany, this.company).subscribe(() => {
+        this.router.navigate(['/companies', this.company.id]);
+      });
     } else {
-      this.companyService.addCompany(newCompany);
+      this.companyService.addCompany(this.company);
+      this.router.navigate(['/companies']);
     }
-    this.router.navigate(['/companies']);
   }
 
   onDeleteJob(index: number) {
+     this.company.jobs.splice(index, 1);
   }
 
   onCancel(){

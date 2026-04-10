@@ -1,4 +1,5 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { take } from 'rxjs/operators';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
 
@@ -29,11 +30,12 @@ id: string;
     });
   }
 
-  onDeleteCompany(){
-    this.company$.subscribe(company => {
+  onDeleteCompany() {
+    this.company$.pipe(take(1)).subscribe(company => {
       if (company) {
-        this.companyService.deleteCompany(company);
-        this.router.navigate(['/companies']);
+        this.companyService.deleteCompany(company!).subscribe(() => {
+          this.router.navigate(['/companies']);
+        });
       }
     });
   }

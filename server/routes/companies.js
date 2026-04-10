@@ -73,15 +73,19 @@ router.post('/', (req, res, next) => {
 router.put('/:id', (req, res, next) => {
   Company.findOne({ id: req.params.id })
     .then(company => {
+      if (!company) {
+        return res.status(404).json({ message: 'Company not found' });
+      }
       company.name = req.body.name;
       company.description = req.body.description;
       company.logoUrl = req.body.logoUrl;
       company.websiteUrl = req.body.websiteUrl;
       company.jobs = req.body.jobs;
-      Company.updateOne({ id: req.params.id }, company)
+      company.save()
         .then(result => {
-          res.status(204).json({
-            message: 'Company updated successfully'
+          res.status(200).json({
+            message: 'Company updated successfully',
+            company: result
           });
         })
         .catch(error => {
