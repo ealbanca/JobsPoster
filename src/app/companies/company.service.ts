@@ -1,10 +1,8 @@
-import { Injectable } from "@angular/core";
+import { Injectable, EventEmitter } from "@angular/core";
 import { Subject } from "rxjs";
-import { map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 import { Company } from "./company.model";
-import { Job } from "../shared/job.model";
 import { JobsListService } from "../jobs-list/jobs-list.service";
 
 @Injectable()
@@ -16,20 +14,16 @@ export class CompanyService {
     maxCompanyId: number;
     
 
-    constructor(private jobsListService: JobsListService, private http: HttpClient) {}
-
-    setCompanies(companies: Company[]) {
-        this.companies = companies;
-        this.companiesChanged.next(this.companies.slice());
+    constructor(private http: HttpClient) {
+        this.maxCompanyId = this.getMaxCompanyId();
     }
 
     getCompanies() {
-        return this.http.get<{ companies: Company[] }>("http://localhost:3000/companies")
-            .pipe(map(response => response.companies));
+        return this.http.get<any>("http://localhost:3000/companies")
     }
 
-    getCompany(index: number) {
-        return this.http.get<Company>(`http://localhost:3000/companies/${index}`);
+    getCompany(id: string) {
+        return this.http.get<Company>(`http://localhost:3000/companies/${id}`);
     }
 
     getMaxCompanyId(): number {
@@ -54,9 +48,12 @@ export class CompanyService {
             newCompany, 
             { headers: headers }
         ).subscribe(response => {
-                this.companies.push(response.company);
+            // Re-fetch the full list from the backend
+            this.getCompanies().subscribe(companies => {
+                this.companies = companies;
                 this.companiesChanged.next(this.companies.slice());
             });
+        });
     }
 
     updateCompany(originalCompany: Company, newCompany: Company) {
@@ -79,8 +76,17 @@ export class CompanyService {
         });
     }
 
-    deleteCompany(index: number) {
-        this.companies.splice(index, 1);
-        this.companiesChanged.next(this.companies.slice());
+    deleteCompany(company: Company) {
+        if(!company || company === undefined) {
+            return;
+        }
+        const pos = this.companies.findIndex(c => c.id === company.id);
+        if (pos < 0) {
+            return;
+        }
+        this.http.delete(`http://localhost:3000/companies/${company.id}`).subscribe(() => {
+            this.companies.splice(pos, 1);
+            this.companiesChanged.next(this.companies.slice());
+        });
     }
 }

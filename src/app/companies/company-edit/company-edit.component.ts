@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { FormGroup, FormControl, FormArray, Validators} from '@angular/forms';
+import { NgForm } from '@angular/forms';
 
 import { CompanyService } from '../company.service';
+import { Company } from '../company.model';
 
 @Component({
   templateUrl: './company-edit.component.html',
   styleUrls: ['./company-edit.component.css']
 })
 export class CompanyEditComponent implements OnInit {
-  id: number;
-  editMode = false;
-  companyForm: FormGroup;
+  originalCompany: Company;
+  company: Company = new Company('', '', '', '', '', []);
+  editMode: boolean = false;
 
   constructor(private route: ActivatedRoute,
     private companyService: CompanyService,
@@ -20,103 +21,52 @@ export class CompanyEditComponent implements OnInit {
   ngOnInit(){
     this.route.params.subscribe(
       (params : Params ) => {
-        this.id = +params['id'];
-        this.editMode = params['id'] != null;
-        this.initForm();
+        const id = params['id'];
+        if (!id) {
+          this.editMode = false;
+          return;
+        }
+        else {
+          this.companyService.getCompany(id).subscribe(company => {
+            this.originalCompany = company;
+            if (!company) {
+              this.editMode = false;
+              return;
+            }
+            else {
+              this.editMode = true;
+              this.company = JSON.parse(JSON.stringify(this.originalCompany));
+            }
+          });
+        }
       }
     );
   }
 
-  onSubmit(){
-    const value = this.companyForm.value;
+
+  onSubmit(form: NgForm) {
+    const value = form.value;
+    const newCompany = new Company(
+      this.company.id,
+      value.name,
+      value.description,
+      value.logoUrl,
+      value.websiteUrl,
+      this.company.jobs
+    );
     if (this.editMode) {
-      this.companyService.getCompany(this.id).subscribe(company => {
-        const jobs = value.jobs ? value.jobs.map((j: any, idx: number) => ({
-          title: j.title,
-          location: company.jobs && company.jobs[idx] ? company.jobs[idx].location : j.location || '',
-          salary: j.salary
-        })) : [];
-        const newCompany = {
-          id: String(this.id),
-          name: value.name,
-          logoUrl: value.logoUrl,
-          websiteUrl: value.websiteUrl,
-          description: value.description,
-          jobs: jobs
-        };
-        this.companyService.updateCompany(this.id, newCompany);
-        this.onCancel();
-      });
+      this.companyService.updateCompany(this.originalCompany, newCompany);
     } else {
-      const jobs = value.jobs ? value.jobs.map((j: any) => ({
-        title: j.title,
-        location: j.location || '',
-        salary: j.salary
-      })) : [];
-      const newCompany = {
-        id: Date.now().toString(),
-        name: value.name,
-        logoUrl: value.logoUrl,
-        websiteUrl: value.websiteUrl,
-        description: value.description,
-        jobs: jobs
-      };
       this.companyService.addCompany(newCompany);
-      this.onCancel();
     }
+    this.router.navigate(['/companies']);
   }
 
-  onDeleteJob(index: number){
-    (<FormArray>this.companyForm.get('jobs')).removeAt(index);
+  onDeleteJob(index: number) {
   }
 
   onCancel(){
-    this.router.navigate(['../'], {relativeTo: this.route});
+    this.router.navigate(['/companies']);
   }
 
-  private initForm() {
-    let companyName = '';
-    let companyLogoUrl = '';
-    let companyDescription = '';
-    let companyWebsiteUrl = '';
-    let companyJobs: FormArray<FormGroup> = new FormArray<FormGroup>([]);
-
-    if (this.editMode) {
-      this.companyService.getCompany(this.id).subscribe(company => {
-        companyName = company.name;
-        companyLogoUrl = company.logoUrl;
-        companyWebsiteUrl = company.websiteUrl;
-        companyDescription = company.description;
-        if (company.jobs) {
-          for (let job of company.jobs) {
-            companyJobs.push(
-              new FormGroup({
-                'title': new FormControl(job.title, Validators.required),
-                'salary': new FormControl(job.salary, Validators.required)
-              })
-            );
-          }
-        }
-        this.companyForm = new FormGroup({
-          'name': new FormControl(companyName, Validators.required),
-          'websiteUrl': new FormControl(companyWebsiteUrl, Validators.required),
-          'logoUrl': new FormControl(companyLogoUrl, Validators.required),
-          'description': new FormControl(companyDescription, Validators.required),
-          'jobs': companyJobs
-        });
-      });
-    } else {
-      this.companyForm = new FormGroup({
-        'name': new FormControl(companyName, Validators.required),
-        'websiteUrl': new FormControl(companyWebsiteUrl, Validators.required),
-        'logoUrl': new FormControl(companyLogoUrl, Validators.required),
-        'description': new FormControl(companyDescription, Validators.required),
-        'jobs': companyJobs
-      });
-    }
-  }
-
-  get controls() { // a getter!
-    return (<FormArray>this.companyForm.get('jobs')).controls;
-  }
 }

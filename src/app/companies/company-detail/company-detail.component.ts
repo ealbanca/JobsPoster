@@ -4,6 +4,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { Company } from '../company.model';
 import { CompanyService } from '../company.service';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -12,8 +13,8 @@ import { CompanyService } from '../company.service';
   styleUrls: ['./company-detail.component.css']
 })
 export class CompanyDetailComponent implements OnInit {
-company: Company;
-id: number;
+company$: Observable<Company>;
+id: string;
 
   constructor(private companyService: CompanyService,
     private route: ActivatedRoute,
@@ -22,23 +23,22 @@ id: number;
   }
 
   ngOnInit(){
-    this.route.params.subscribe(
-      (params: Params) => {
-        this.id = params['id'];
-        this.companyService.getCompany(this.id).subscribe(company => {
-          this.company = company;
-        });
-      }
-    );
+    this.route.params.subscribe((params: Params) => {
+      this.id = params['id'];
+      this.company$ = this.companyService.getCompany(this.id);
+    });
   }
 
   onEditCompany(){
     this.router.navigate(['edit'], {relativeTo: this.route});
-    //this.router.navigate(['../', this.id, 'edit'], {relativeTo: this.route});
   }
 
   onDeleteCompany(){
-    this.companyService.deleteCompany(this.id);
-    this.router.navigate(['/companies']);
+    this.company$.subscribe(company => {
+      if (company) {
+        this.companyService.deleteCompany(company);
+        this.router.navigate(['/companies']);
+      }
+    });
   }
 }

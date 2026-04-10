@@ -21,7 +21,7 @@ router.get('/', (req, res, next) => {
 
 //Get a single job by ID
 router.get('/:id', (req, res, next) => {
-  Job.findOne({ _id: req.params.id })
+  Job.findOne({ id: req.params.id })
     .then(job => {
       if (job) {
         res.status(200).json(job);

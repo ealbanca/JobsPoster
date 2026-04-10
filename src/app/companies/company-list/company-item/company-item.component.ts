@@ -8,9 +8,15 @@ import { Company } from '../../company.model';
 })
 export class CompanyItemComponent implements OnInit {
   @Input() company: Company;
-  @Input()index: number;
+  @Input() companySelected: Company;
+
+  constructor() { }
 
   ngOnInit(){
 
+  }
+
+  onSelected() {
+    this.companySelected = this.company;
   }
 }
