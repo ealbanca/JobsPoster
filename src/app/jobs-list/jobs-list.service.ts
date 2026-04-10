@@ -1,17 +1,22 @@
+import { Injectable } from '@angular/core';
 import { Subject } from "rxjs";
-
+import { HttpClient } from '@angular/common/http';
 import { Job } from "../shared/job.model";
 
+@Injectable({ providedIn: 'root' })
 export class JobsListService {
     jobsChanged = new Subject<Job[]>();
     startedEditing = new Subject<number>();
-    private jobs: Job[] = [
-        new Job('1', 'Software Engineer', 'Develop and maintain software applications.', 'New York', 120000, 'Full-time', '1'),
-        new Job('2', 'Data Analyst', 'Analyze and interpret complex data sets.', 'San Francisco', 90000, 'Full-time', '2'),
-        new Job('3', 'Project Manager', 'Oversee project planning and execution.', 'Chicago', 110000, 'Full-time', '3')
-    ];
+    private jobs: Job[] = [];
+
+    constructor(private http: HttpClient) {}
 
     getJobs() {
+        this.http.get<{ jobs: Job[] }>('http://localhost:3000/jobs')
+            .subscribe(response => {
+                this.jobs = response.jobs;
+                this.jobsChanged.next(this.jobs.slice());
+            });
         return this.jobs.slice();
     }
 
@@ -20,22 +25,44 @@ export class JobsListService {
     }
 
     addJob(job: Job) {
-        this.jobs.push(job);
-        this.jobsChanged.next(this.jobs.slice());
+        this.http.post<Job>('http://localhost:3000/jobs', job)
+            .subscribe(() => {
+                this.http.get<{ jobs: Job[] }>('http://localhost:3000/jobs')
+                    .subscribe(response => {
+                        this.jobs = response.jobs;
+                        this.jobsChanged.next(this.jobs.slice());
+                    });
+            });
     }
 
     addJobs(jobs: Job[]) {
-        this.jobs.push(...jobs);
-        this.jobsChanged.next(this.jobs.slice());
+        // Optionally implement bulk add if your backend supports it
+        jobs.forEach(job => this.addJob(job));
     }
 
     updateJob(index: number, newJob: Job) {
-        this.jobs[index] = newJob;
-        this.jobsChanged.next(this.jobs.slice());
+        const jobToUpdate = this.jobs[index];
+        if (!jobToUpdate) return;
+        this.http.put(`http://localhost:3000/jobs/${jobToUpdate.id}`, newJob)
+            .subscribe(() => {
+                this.http.get<{ jobs: Job[] }>('http://localhost:3000/jobs')
+                    .subscribe(response => {
+                        this.jobs = response.jobs;
+                        this.jobsChanged.next(this.jobs.slice());
+                    });
+            });
     }
 
     deleteJob(index: number) {
-        this.jobs.splice(index, 1);
-        this.jobsChanged.next(this.jobs.slice());
+        const jobToDelete = this.jobs[index];
+        if (!jobToDelete) return;
+        this.http.delete(`http://localhost:3000/jobs/${jobToDelete.id}`)
+            .subscribe(() => {
+                this.http.get<{ jobs: Job[] }>('http://localhost:3000/jobs')
+                    .subscribe(response => {
+                        this.jobs = response.jobs;
+                        this.jobsChanged.next(this.jobs.slice());
+                    });
+            });
     }
 }
