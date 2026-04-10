@@ -16,12 +16,12 @@
                 <div class="col-xs-12">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input 
-                        type="text" 
-                        id="name"
-                        name="name"
-                        ngModel
-                        class="form-control">
+                            <input 
+                            type="text" 
+                            id="name"
+                            name="name"
+                            [(ngModel)]="company.name"
+                            class="form-control">
                     </div>
                 </div>
             </div>
@@ -29,13 +29,13 @@
                 <div class="col-xs-12">
                     <div class="form-group">
                         <label for="logoUrl">Image URL</label>
-                        <input 
-                        type="text" 
-                        id="logoUrl"
-                        name="logoUrl"
-                        ngModel
-                        class="form-control"
-                        #imagePath>
+                            <input 
+                            type="text" 
+                            id="logoUrl"
+                            name="logoUrl"
+                            [(ngModel)]="company.logoUrl"
+                            class="form-control"
+                            #imagePath>
                     </div>
                 </div>
             </div>
@@ -52,8 +52,8 @@
                         type="text"
                         id="websiteUrl"
                         name="websiteUrl"
-                        ngModel
-                        class="form-control">
+                            [(ngModel)]="company.websiteUrl"
+                            class="form-control">
                     </div>
                 </div>
             </div>
@@ -64,8 +64,8 @@
                         <textarea
                             id="description"
                             name="description"
-                            ngModel
-                            class="form-control"></textarea>
+                               [(ngModel)]="company.description"
+                               class="form-control"></textarea>
                     </div>
                 </div>
             </div>
@@ -77,10 +77,9 @@
                         type="text"
                         id="description"
                         name="description"
-                        ngModel
-                        class="form-control"
-                        formControlName="description"
-                        rows="6"></textarea>
+                            [(ngModel)]="company.description"
+                            class="form-control"
+                            rows="6"></textarea>
                     </div>
                 </div>
             </div>
