@@ -24,8 +24,8 @@ const jobSchema = new mongoose.Schema({
     enum: ['Full-time', 'Part-time', 'Contract', 'Internship'],
   },
   companyId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Company',
+    type: String,
+    required: true,
   },
 });
 

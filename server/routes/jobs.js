@@ -9,6 +9,7 @@ const Company = require('../models/Company');
 // Get all jobs
 router.get('/', (req, res, next) => {
   Job.find()
+  .populate('companyId')
     .then(jobs => {
       res.status(200).json({
         message: 'Jobs fetched successfully!',

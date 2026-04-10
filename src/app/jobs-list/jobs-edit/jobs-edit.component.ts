@@ -31,7 +31,9 @@ export class JobsEditComponent implements OnInit, OnDestroy {
           location: this.editedItem.location,
           salary: this.editedItem.salary,
           type: this.editedItem.type,
-          companyId: this.editedItem.companyId
+          companyId: (typeof this.editedItem.companyId === 'object' && this.editedItem.companyId !== null)
+            ? (this.editedItem.companyId._id || this.editedItem.companyId.id || '')
+            : (this.editedItem.companyId || '')
         });
       });
   }
