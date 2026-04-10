@@ -4,6 +4,7 @@ const router = express.Router();
 
 const Job = require('../models/Job');
 const sequenceGenerator = require('./seqGenerator');
+const Company = require('../models/Company');
 
 // Get all jobs
 router.get('/', (req, res, next) => {
@@ -65,6 +66,37 @@ router.post('/', (req, res, next) => {
     .catch(error => {
       res.status(500).json({
         message: 'An error occurred',
+        error: error
+      });
+    });
+});
+
+// Update a job
+router.put('/:id', (req, res, next) => {
+  Job.findOne({ id: req.params.id })
+    .then(job => {
+      job.title = req.body.title;
+      job.description = req.body.description;
+      job.location = req.body.location;
+      job.salary = req.body.salary;
+      job.type = req.body.type;
+      job.companyId = req.body.companyId;
+      job.updateOne({ id: req.body.params.id }, job)
+        .then(result => {
+          res.status(204).json({
+            message: 'Job updated successfully'
+          });
+        })
+        .catch(error => {
+          res.status(500).json({
+            message: 'An error occurred',
+            error: error
+          });
+        });
+    })
+    .catch(error => {
+      res.status(500).json({
+        message: 'Job not found',
         error: error
       });
     });
