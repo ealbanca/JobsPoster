@@ -20,10 +20,7 @@ const companySchema = new mongoose.Schema({
     websiteUrl: {
     type: String,
   },
-  jobs: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Job',
-  }],
+  jobs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Job' }]
 });
 
 module.exports = mongoose.model('Company', companySchema);

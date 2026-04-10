@@ -7,6 +7,7 @@ const sequenceGenerator = require('./seqGenerator');
 // Get all companies
 router.get('/', (req, res, next) => {
   Company.find()
+    .populate('jobs')
     .then(companies => {
       res.status(200).json({
         message: 'Companies fetched successfully!',

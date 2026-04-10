@@ -4,7 +4,6 @@ const router = express.Router();
 
 const Job = require('../models/Job');
 const sequenceGenerator = require('./seqGenerator');
-const Company = require('../models/Company');
 
 // Get all jobs
 router.get('/', (req, res, next) => {
@@ -76,15 +75,18 @@ router.post('/', (req, res, next) => {
 router.put('/:id', (req, res, next) => {
   Job.findOne({ id: req.params.id })
     .then(job => {
+      if (!job) {
+        return res.status(404).json({ message: 'Job not found' });
+      }
       job.title = req.body.title;
       job.description = req.body.description;
       job.location = req.body.location;
       job.salary = req.body.salary;
       job.type = req.body.type;
       job.companyId = req.body.companyId;
-      job.updateOne({ id: req.body.params.id }, job)
+      job.save()
         .then(result => {
-          res.status(204).json({
+          res.status(200).json({
             message: 'Job updated successfully'
           });
         })
