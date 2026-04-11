@@ -58,10 +58,28 @@ router.post('/', (req, res, next) => {
 
   job.save()
     .then(createdJob => {
-      res.status(201).json({
-        message: 'Job added successfully',
-        job: createdJob
-      });
+      // After saving the job, push its ObjectId to the company's jobs array
+      const Company = require('../models/Company');
+      Company.findOneAndUpdate(
+        { id: createdJob.companyId },
+        { $push: { jobs: createdJob._id } },
+        { new: true }
+      )
+        .then(updatedCompany => {
+          res.status(201).json({
+            message: 'Job added successfully and company updated',
+            job: createdJob,
+            company: updatedCompany
+          });
+        })
+        .catch(error => {
+          // If company update fails, still return job creation success
+          res.status(201).json({
+            message: 'Job added, but failed to update company',
+            job: createdJob,
+            error: error
+          });
+        });
     })
     .catch(error => {
       res.status(500).json({
